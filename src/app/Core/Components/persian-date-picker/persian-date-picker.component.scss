@@ -1,0 +1,73 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+.persian-datepicker-wrapper {
+  width: 100%;
+}
+
+// ================== هماهنگ‌سازی تقویم با تم تیره پروژه ==================
+:host ::ng-deep {
+  .ng-persian-datepicker {
+    background-color: var(--surface-card, #1a2332);
+    border-radius: 8px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+  }
+
+  // روزهای ماه
+  .ng-persian-datepicker .month-days .day-col span {
+    color: #e5e7eb; // روزهای عادی
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+
+  // روزها هنگام hover
+  .ng-persian-datepicker .month-days .day-col span:hover {
+    background-color: rgba(16, 185, 129, 0.2); // سبز ملایم تم
+    color: #10b981;
+  }
+
+  // ===== روز انتخاب‌شده (رفع استایل صورتی پیش‌فرض) =====
+  .ng-persian-datepicker .month-days .day-col .dp-btn_selected,
+  .ng-persian-datepicker .dp-btn_selected,
+  .ng-persian-datepicker span.dp-btn_selected {
+    background-color: #10b981 !important; // سبز اصلی دکمه‌های پروژه
+    color: #ffffff !important;
+    border-radius: 6px;
+    font-weight: 600;
+  }
+
+  // عنوان ماه/سال و دکمه‌های ناوبری
+  .ng-persian-datepicker .dp-header,
+  .ng-persian-datepicker .toolbar {
+    color: #e5e7eb;
+  }
+
+  .ng-persian-datepicker .dp-header button,
+  .ng-persian-datepicker .toolbar button {
+    color: #10b981;
+
+    &:hover {
+      color: #34d399;
+    }
+  }
+
+  // نام روزهای هفته
+  .ng-persian-datepicker .weekday-title,
+  .ng-persian-datepicker .weekdays span {
+    color: #9ca3af;
+  }
+
+  // اینپوت داخل تقویم
+  .ng-persian-datepicker input {
+    background-color: #0f172a;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: #e5e7eb;
+    border-radius: 6px;
+
+    &:focus {
+      border-color: #10b981;
+      outline: none;
+    }
+  }
+}

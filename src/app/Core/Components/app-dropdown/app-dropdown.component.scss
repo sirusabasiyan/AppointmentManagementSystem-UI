@@ -1,0 +1,105 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+.custom-autocomplete-wrap {
+  width: 100%;
+
+  &.ng-invalid {
+    ::ng-deep {
+      .p-autocomplete .p-autocomplete-input {
+        border-color: #ef4444 !important;
+      }
+    }
+  }
+}
+
+::ng-deep {
+  .p-autocomplete {
+    width: 100% !important;
+    display: flex !important;
+    direction: rtl !important;
+
+    .p-autocomplete-input {
+      flex: 1 !important;
+      text-align: right !important;
+      direction: rtl !important;
+      border-radius: 0 8px 8px 0 !important;
+      background-color: var(--input-bg, #1e293b) !important;
+      border: 1px solid var(--input-border, #334155) !important;
+      color: var(--text-main, #f8fafc) !important;
+      padding: 10px 14px !important;
+      font-size: 0.9rem !important;
+
+      &:focus, &:enabled:focus {
+        border-color: #10b981 !important;
+        box-shadow: 0 0 0 1px #10b981 !important;
+      }
+    }
+
+    .p-autocomplete-dropdown {
+      border-radius: 8px 0 0 8px !important;
+      background: var(--input-bg, #1e293b) !important;
+      border: 1px solid var(--input-border, #334155) !important;
+      color: var(--text-muted, #94a3b8) !important;
+      width: 42px !important;
+
+      &:hover {
+        background: #10b981 !important;
+        color: #fff !important;
+        border-color: #10b981 !important;
+      }
+    }
+  }
+
+  /* پنل اختصاصی که کاملاً از بقیه ایزوله است */
+  .my-custom-dropdown-panel {
+    direction: rtl !important;
+    text-align: right !important;
+    border-radius: 12px !important;
+    background-color: var(--input-bg, #1e293b) !important;
+    border: 1px solid var(--input-border, #334155) !important;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4) !important;
+    margin-top: 4px !important;
+    overflow: hidden !important;
+    z-index: 1060 !important;
+
+    /* مخفی کردن قطعی متن‌های کمکی و اریا مثل items selected */
+    .p-hidden-accessible,
+    .p-autocomplete-loader,
+    span[id*="assistive"],
+    [aria-live],
+    .p-screen-reader {
+      display: none !important;
+      visibility: hidden !important;
+      opacity: 0 !important;
+      height: 0 !important;
+      width: 0 !important;
+      position: absolute !important;
+      overflow: hidden !important;
+    }
+
+    .p-autocomplete-items {
+      padding: 6px !important;
+      margin: 0 !important;
+    }
+
+    .p-autocomplete-item {
+      padding: 10px 14px !important;
+      font-size: 0.9rem !important;
+      color: var(--text-main, #f8fafc) !important;
+      background: transparent !important;
+      border-radius: 8px !important;
+      margin-bottom: 2px;
+      transition: background 0.2s ease;
+      cursor: pointer;
+
+      &:hover,
+      &.p-highlight {
+        background: rgba(16, 185, 129, 0.15) !important;
+        color: #10b981 !important;
+      }
+    }
+  }
+}

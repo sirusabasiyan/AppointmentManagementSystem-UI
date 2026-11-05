@@ -1,0 +1,12 @@
+:host {
+  display: block;
+  height: 100dvh;
+}
+
+.login-main {
+  min-height: 0;
+  overflow: hidden;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}

@@ -1,0 +1,556 @@
+// ============================================
+// متغیرهای پایه (تم روشن پیش‌فرض)
+// ============================================
+:host {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  direction: rtl;
+
+
+  --page-bg: #f8fafc;
+  --page-grid-color: rgba(0, 0, 0, 0.04);
+  --card-bg: #ffffff;
+  --input-bg: #ffffff;
+  --input-border: #e2e8f0;
+  --text-main: #1e293b;
+  --text-muted: #64748b;
+  --captcha-bg: #f1f5f9;
+  --glow-color: rgba(16, 185, 129, 0.15);
+  --frame-shadow: 0 15px 35px rgba(0, 0, 0, 0.06);
+  --neon-green: #10b981;
+  --neon-cyan: #06b6d4;
+  --neon-emerald: #059669;
+}
+
+// ============================================
+// هماهنگی کامل با دارک مود پروژه ([data-bs-theme="dark"])
+// ============================================
+:host-context([data-bs-theme="dark"]) {
+  --page-bg: #0f172a;
+  --page-grid-color: rgba(255, 255, 255, 0.035);
+  --card-bg: #1e293b;
+  --input-bg: #0f172a;
+  --input-border: #334155;
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  --captcha-bg: #0f172a;
+  --glow-color: rgba(16, 185, 129, 0.2);
+  --frame-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
+}
+
+.auth-page {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  box-sizing: border-box;
+
+  display: flex;
+  justify-content: center;
+  /* تغییر از center به flex-start تا فرم همیشه از بالا (پایین نوبار) شروع شود */
+  align-items: flex-start; 
+
+  /* فاصله مناسب از بالا و لبه‌ها */
+  padding: 24px 16px;
+
+  background-color: var(--page-bg);
+  background-image: 
+    linear-gradient(to right, var(--page-grid-color) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--page-grid-color) 1px, transparent 1px);
+  background-size: 48px 48px;
+
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  transition: background-color 0.3s ease;
+}
+
+
+
+.background-glow {
+  position: absolute;
+  top: -200px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 700px;
+  height: 500px;
+  background: radial-gradient(circle, var(--glow-color) 0%, transparent 70%);
+  z-index: 1;
+  pointer-events: none;
+}
+
+.auth-card-frame {
+  position: relative;
+  width: 100%;
+  max-width: 450px;
+  border-radius: 20px;
+  padding: 2px;
+  overflow: hidden;
+  z-index: 2;
+  flex: 0 0 auto;
+  box-shadow: var(--frame-shadow);
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: conic-gradient(
+      transparent,
+      rgba(16, 185, 129, 0.1) 20deg,
+      var(--neon-green) 120deg,
+      var(--neon-cyan) 180deg,
+      transparent 240deg
+    );
+    animation: rotateBorder 5s linear infinite;
+    z-index: 1;
+  }
+}
+
+@keyframes rotateBorder {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.auth-card-content {
+  position: relative;
+  z-index: 2;
+  background: var(--card-bg);
+  border-radius: 18px;
+  padding: 34px 28px;
+  color: var(--text-main);
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.brand-header {
+  text-align: center;
+  margin-bottom: 22px;
+
+  .brand-logo-wrap {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 64px;
+    height: 64px;
+    margin-bottom: 12px;
+
+    .brand-logo-img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+  }
+
+  .brand-title {
+    font-size: 1.35rem;
+    font-weight: 700;
+    margin: 0 0 6px 0;
+    color: var(--text-main);
+  }
+
+  .brand-subtitle {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin: 0;
+  }
+}
+
+.tab-switcher {
+  display: flex;
+  background: var(--captcha-bg);
+  border: 1px solid var(--input-border);
+  border-radius: 12px;
+  padding: 4px;
+  margin-bottom: 22px;
+
+  .tab-btn {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: var(--text-muted);
+    padding: 9px;
+    font-size: 0.92rem;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+
+    &:hover {
+      color: var(--text-main);
+    }
+
+    &.active {
+      background: rgba(16, 185, 129, 0.16);
+      color: var(--neon-green);
+      font-weight: 700;
+    }
+  }
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+
+  .form-row {
+    display: flex;
+    gap: 10px;
+
+    .col {
+      flex: 1;
+    }
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+
+    .form-label {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-align: right;
+    }
+  }
+}
+
+.password-field-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.captcha-row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+
+  .captcha-input {
+    flex: 1;
+    font-weight: 700;
+    letter-spacing: 4px;
+  }
+
+   .captcha-box {
+    flex: 1;
+    height: 44px;
+    background: var(--captcha-bg);
+    border: 1px solid var(--input-border);
+    border-radius: 8px;
+    overflow: hidden;
+
+    .captcha-img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: fill;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .captcha-loading-text {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+  }
+
+  .captcha-refresh-btn {
+    flex-shrink: 0;
+    width: 44px;
+    height: 44px;
+    background: var(--captcha-bg);
+    border: 1px solid var(--input-border);
+    border-radius: 8px;
+    color: var(--text-muted);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    transition: all 0.25s ease;
+
+    .refresh-icon {
+      width: 22px;              // سایز بزرگ و مشخص
+      height: 22px;
+      transform: scaleX(-1);    // تغییر جهت آیکون به راست‌گرد/چپ‌گرد
+      transition: transform 0.3s ease;
+    }
+
+    &:hover {
+      color: var(--neon-green);
+      border-color: var(--neon-green);
+      background: rgba(16, 185, 129, 0.08);
+
+      .refresh-icon {
+        transform: scaleX(-1) rotate(60deg);
+      }
+    }
+
+    // چرخش نرم هنگام لودینگ
+    &.spinning .refresh-icon {
+      animation: spinReverse 0.8s linear infinite;
+    }
+  }
+
+  @keyframes spinReverse {
+    from {
+      transform: scaleX(-1) rotate(0deg);
+    }
+    to {
+      transform: scaleX(-1) rotate(360deg);
+    }
+  }
+
+
+
+
+}
+
+.submit-btn {
+  margin-top: 10px;
+  width: 100%;
+  background: linear-gradient(135deg, var(--neon-green), var(--neon-emerald)) !important;
+  border: none !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  padding: 12px !important;
+  border-radius: 10px !important;
+  box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3) !important;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.45) !important;
+  }
+}
+
+.error-text {
+  color: #ef4444 !important;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-align: right;
+  margin-top: 2px;
+}
+
+.card-footer {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+// ============================================
+// تنظیمات اختصاصی کامپوننت‌های PrimeNG
+// ============================================
+:host ::ng-deep {
+  .p-inputtext {
+    background-color: var(--input-bg) !important;
+    border: 1px solid var(--input-border) !important;
+    color: var(--text-main) !important;
+    border-radius: 8px !important;
+    padding: 10px 14px !important;
+    font-size: 0.9rem !important;
+
+    &:enabled:focus {
+      border-color: var(--neon-green) !important;
+      box-shadow: 0 0 0 1px var(--neon-green) !important;
+    }
+  }
+
+  .custom-password {
+    position: relative;
+    width: 100%;
+    display: flex;
+    align-items: center;
+
+    // استایل‌دهی به اینپوت اصلی برای ایجاد فضا
+    .p-inputtext {
+      width: 100%;
+      padding-left: 45px !important; // فضای خالی برای آیکون
+      text-align: center;
+    }
+
+    // آیکون چشم (Toggle Mask)
+    .p-password-toggle-mask {
+      position: absolute !important;
+      left: 10px !important; // فاصله از سمت راست (چون rtl است، در واقع سمت چپ فیلد می‌شود)
+      top: 50% !important;
+      transform: translateY(-50%) !important;
+      background: transparent !important;
+      border: none !important;
+      cursor: pointer;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 !important;
+      width: 30px !important;
+      height: 30px !important;
+
+      .pi {
+        color: var(--text-muted) !important;
+        font-size: 1rem !important;
+
+        &:hover {
+          color: var(--neon-green) !important;
+        }
+      }
+    }
+  }
+
+
+  .p-dropdown {
+    background-color: var(--input-bg) !important;
+    border: 1px solid var(--input-border) !important;
+    border-radius: 8px !important;
+
+    .p-dropdown-label {
+      color: var(--text-main) !important;
+      padding: 10px 14px !important;
+      text-align: right;
+    }
+
+    .p-dropdown-trigger {
+      color: var(--text-muted) !important;
+    }
+
+    &:not(.p-disabled).p-focus {
+      border-color: var(--neon-green) !important;
+      box-shadow: 0 0 0 1px var(--neon-green) !important;
+    }
+  }
+
+  .p-calendar {
+    width: 100%;
+    .p-inputtext {
+      border-radius: 8px 0 0 8px !important;
+      text-align: center;
+    }
+    .p-button {
+      background: var(--input-border) !important;
+      border: 1px solid var(--input-border) !important;
+      border-right: none !important;
+      color: var(--neon-green) !important;
+      border-radius: 0 8px 8px 0 !important;
+    }
+  }
+}
+
+.password-field-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.password-field-wrapper .password-input {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px 14px 10px 45px !important; // فضا برای آیکون در سمت چپ
+  text-align: center;
+}
+
+.password-field-wrapper .password-toggle {
+  position: absolute;
+  top: 50%;
+  left: 12px;
+  right: auto;
+  transform: translateY(-50%);
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 3;
+
+  &:hover {
+    color: var(--neon-green);
+  }
+
+  i {
+    font-size: 1rem;
+    line-height: 1;
+  }
+}
+
+
+.forgot-link {
+  align-self: flex-start;
+  background: none;
+  border: none;
+  padding: 0;
+  margin-top: 4px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--neon-green);
+  cursor: pointer;
+
+  &:hover { text-decoration: underline; }
+}
+
+.modal-backdrop-custom {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(3px);
+  display: flex;
+  justify-content: center;
+  align-items: center;      // قبلاً flex-start بود
+  padding: 24px 16px;
+  overflow-y: auto;
+}
+
+.modal-box {
+  margin: auto;             // اگر صفحه کوتاه بود، مودال بریده نشود و اسکرول کار کند
+  width: 100%;
+  max-width: 420px;
+  background: var(--card-bg);
+  color: var(--text-main);
+  border: 1px solid var(--input-border);
+  border-radius: 16px;
+  padding: 26px 24px;
+  box-shadow: var(--frame-shadow);
+
+  .modal-title {
+    margin: 0 0 18px;
+    font-size: 1.15rem;
+    font-weight: 700;
+    text-align: center;
+  }
+}
+
+.modal-actions {
+  display: flex;
+  gap: 10px;
+
+  .submit-btn { flex: 2; margin-top: 0; }
+
+  .cancel-btn {
+    flex: 1;
+    background: var(--captcha-bg);
+    border: 1px solid var(--input-border);
+    color: var(--text-muted);
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+  }
+}

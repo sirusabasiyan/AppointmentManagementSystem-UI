@@ -1,0 +1,47 @@
+.form-control:focus,
+.form-select:focus {
+  border-color: #198754;
+  box-shadow: 0 0 0 0.2rem rgba(25, 135, 84, 0.15);
+}
+
+.form-check-input:checked {
+  background-color: #198754;
+  border-color: #198754;
+}
+
+/* استایل آواتار و دکمه‌های کنترل آن */
+.avatar-wrapper {
+  width: 96px;
+  height: 96px;
+
+  .avatar-img {
+    width: 96px;
+    height: 96px;
+    object-fit: cover;
+    border: 3px solid #e9ecef;
+  }
+
+  .avatar-edit-badge {
+    cursor: pointer;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s ease, background-color 0.2s ease;
+
+    &:hover {
+      transform: scale(1.1);
+      background-color: #157347 !important;
+    }
+  }
+
+  .remove-avatar-btn {
+    width: 24px;
+    height: 24px;
+    line-height: 22px;
+    font-size: 11px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    z-index: 2;
+  }
+}

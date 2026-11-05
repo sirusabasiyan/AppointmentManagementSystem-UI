@@ -1,0 +1,22 @@
+<div class="custom-autocomplete-wrap" [class.ng-invalid]="isInvalid">
+  <p-autoComplete
+    [(ngModel)]="selectedObject"
+    [suggestions]="filteredOptions"
+    (completeMethod)="search($event)"
+    (onSelect)="onSelect($event)"
+    (onDropdownClick)="onDropdownClick($event)"
+    (onBlur)="onBlur()"
+    [field]="optionLabel"
+    [dropdown]="true"
+    [placeholder]="placeholder"
+    [disabled]="disabled"
+    [styleClass]="styleClass"
+    inputStyleClass="w-full"
+    scrollHeight="14rem"
+    [forceSelection]="true"
+    [completeOnFocus]="true"
+    appendTo="body"
+    panelStyleClass="my-custom-dropdown-panel"
+  >
+  </p-autoComplete>
+</div>

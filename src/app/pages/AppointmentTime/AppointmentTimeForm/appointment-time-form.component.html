@@ -1,0 +1,166 @@
+<div
+  class="modal fade"
+  [id]="modalId"
+  tabindex="-1"
+  aria-labelledby="appointmentTimeModalTitle"
+  aria-hidden="true"
+  dir="rtl"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 shadow rounded-4">
+
+      <!-- هدر -->
+      <div class="modal-header border-0 pb-0 pt-4 px-4 d-flex align-items-start justify-content-between">
+        <div class="d-flex align-items-center gap-3">
+          <div
+            class="p-2 rounded-3 bg-success-subtle text-success d-flex align-items-center justify-content-center"
+            style="width: 42px; height: 42px"
+          >
+            @if (!isEditMode) {
+              <!-- create icon -->
+              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor"
+                   class="bi bi-clock-history" viewBox="0 0 16 16">
+                <path d="M8.515 1.019A7 7 0 0 0 8 1V0a8 8 0 0 1 .589.022zm2.004.45a7 7 0 0 0-.985-.299l.219-.976q.576.129 1.126.342zm1.37.71a7 7 0 0 0-.439-.27l.493-.87a8 8 0 0 1 .979.654l-.615.789a7 7 0 0 0-.418-.302zm1.834 1.79a7 7 0 0 0-.653-.796l.724-.69q.406.429.747.91zm.744 1.352a7 7 0 0 0-.214-.468l.893-.45a8 8 0 0 1 .45 1.088l-.95.313a7 7 0 0 0-.179-.483m.53 2.507a7 7 0 0 0-.1-1.025l.985-.17q.1.58.116 1.17zm-.131 1.538q.05-.254.084-.51l.992.133a8 8 0 0 1-.168.905l-.908-.432v-.096zM15 8a7 7 0 0 0-.022-.589l.976-.219q.129.576.342 1.126l-.789.615a7 7 0 0 0-.302-.418zm-.71 1.37a7 7 0 0 0 .27-.439l.87.493a8 8 0 0 1-.654.979l-.789-.615q.16-.192.303-.418m-1.79 1.834q.391-.32.796-.653l.69.724q-.429.406-.91.747l-.576-.818zm-1.352.744q.244-.099.468-.214l.45.893a8 8 0 0 1-1.088.45l-.313-.95q.25-.08.483-.179m-2.507.53q.516-.038 1.025-.1l.17.985q-.58.1-1.17.116zm-1.538-.131q.254.05.51.084l-.133.992a8 8 0 0 1-.905-.168l.432-.908h.096zM8 15a7 7 0 0 0 .589-.022l.219.976q-.576.129-1.126.342l-.615-.789q.192-.16.418-.302zm-1.37-.71a7 7 0 0 0 .439.27l-.493.87a8 8 0 0 1-.979-.654l.615-.789q-.16.192-.303.418m-1.834-1.79a7 7 0 0 0 .653.796l-.724.69q-.406-.429-.747-.91l.576-.818zm-.744-1.352q-.099-.244-.214-.468l-.893.45a8 8 0 0 1-.45-1.088l.95-.313q.08.25.179.483m-.53-2.507q-.038-.516.1-1.025l-.985-.17q-.1.58-.116 1.17zm.131-1.538q-.05.254-.084.51l-.992-.133a8 8 0 0 1 .168-.905l.908.432zM1 8q0-.295.022-.589l-.976-.219A8 8 0 0 1 0 8a8 8 0 0 1 .022-.589l.976.219A7 7 0 0 0 1 8" />
+                <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71z" />
+              </svg>
+            } @else {
+              <!-- edit icon -->
+              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor"
+                   class="bi bi-pencil-square" viewBox="0 0 16 16">
+                <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293z"/>
+                <path d="M13.752 3.69 4.939 12.502a.5.5 0 0 1-.196.12l-2.414.805a.25.25 0 0 1-.316-.316l.805-2.414a.5.5 0 0 1 .12-.196L11.752 1.69z"/>
+                <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
+              </svg>
+            }
+          </div>
+
+          <div>
+            <h5 class="modal-title fw-bold mb-0" id="appointmentTimeModalTitle">{{ modalTitle }}</h5>
+            <small class="text-muted">{{ modalSubtitle }}</small>
+          </div>
+        </div>
+
+        <button
+          type="button"
+          class="btn-close m-0"
+          data-bs-dismiss="modal"
+          aria-label="بستن"
+          id="closeAppointmentTimeModalBtn"
+        ></button>
+      </div>
+
+      <!-- بدنه -->
+      <form (ngSubmit)="onSubmit(f)" #f="ngForm" novalidate>
+        <div class="modal-body px-4 py-3">
+          <div class="row g-3">
+
+            <!-- عنوان -->
+            <div class="col-12">
+              <label class="form-label fw-semibold text-secondary small">
+                عنوان بازه زمانی <span class="text-danger">*</span>
+              </label>
+              <input
+                type="text"
+                class="form-control py-2"
+                name="title"
+                placeholder="مثلاً شیفت صبح"
+                [(ngModel)]="model.title"
+                required
+                maxlength="100"
+                #titleCtrl="ngModel"
+                [ngClass]="{
+                  'is-invalid': titleCtrl.invalid && (titleCtrl.dirty || titleCtrl.touched || f.submitted)
+                }"
+              />
+              @if (titleCtrl.invalid && (titleCtrl.dirty || titleCtrl.touched || f.submitted)) {
+                <div class="invalid-feedback">
+                  @if (titleCtrl.errors?.['required']) { <span>عنوان بازه زمانی الزامی است.</span> }
+                </div>
+              }
+            </div>
+
+            <!-- ساعت شروع -->
+            <div class="col-12 col-md-6">
+              <label class="form-label fw-semibold text-secondary small">
+                ساعت شروع <span class="text-danger">*</span>
+              </label>
+              <input
+                type="time"
+                class="form-control py-2 text-center"
+                name="startTime"
+                [(ngModel)]="model.startTime"
+                (change)="checkTimeValidity()"
+                step="60"
+                dir="ltr"
+                required
+                #startCtrl="ngModel"
+                [ngClass]="{
+                  'is-invalid': startCtrl.invalid && (startCtrl.dirty || startCtrl.touched || f.submitted)
+                }"
+              />
+              @if (startCtrl.invalid && (startCtrl.dirty || startCtrl.touched || f.submitted)) {
+                <div class="invalid-feedback">
+                  @if (startCtrl.errors?.['required']) { <span>ساعت شروع الزامی است.</span> }
+                </div>
+              }
+            </div>
+
+            <!-- ساعت پایان -->
+            <div class="col-12 col-md-6">
+              <label class="form-label fw-semibold text-secondary small">
+                ساعت پایان <span class="text-danger">*</span>
+              </label>
+              <input
+                type="time"
+                class="form-control py-2 text-center"
+                name="endTime"
+                [(ngModel)]="model.endTime"
+                (change)="checkTimeValidity()"
+                step="60"
+                dir="ltr"
+                required
+                #endCtrl="ngModel"
+                [ngClass]="{
+                  'is-invalid':
+                    (endCtrl.invalid && (endCtrl.dirty || endCtrl.touched || f.submitted)) || timeValidationError
+                }"
+              />
+              @if (endCtrl.invalid && (endCtrl.dirty || endCtrl.touched || f.submitted)) {
+                <div class="invalid-feedback">
+                  @if (endCtrl.errors?.['required']) { <span>ساعت پایان الزامی است.</span> }
+                </div>
+              }
+            </div>
+
+            @if (timeValidationError) {
+              <div class="col-12">
+                <div class="alert alert-danger py-2 px-3 small mb-0 rounded-3">
+                  {{ timeValidationError }}
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+
+        <!-- فوتر -->
+        <div class="modal-footer border-0 px-4 pb-4 pt-2">
+          <button type="button" class="btn btn-light px-4 py-2 text-secondary" data-bs-dismiss="modal">
+            انصراف
+          </button>
+
+          <button
+            type="submit"
+            class="btn btn-success px-4 py-2 fw-semibold shadow-sm"
+            [disabled]="!f.valid || isSubmitting || !!timeValidationError"
+          >
+            @if (isSubmitting) {
+              <span class="spinner-border spinner-border-sm me-1"></span>
+            }
+            {{ submitText }}
+          </button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</div>

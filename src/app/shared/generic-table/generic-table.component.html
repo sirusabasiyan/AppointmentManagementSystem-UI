@@ -1,0 +1,142 @@
+<div class="container py-3 py-md-4" dir="rtl">
+  <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+    <!-- هدر کارت: عنوان راست و دکمه سمت چپ -->
+    @if (title || effectiveHeaderActions) {
+      <div
+        class="card-header bg-white border-0 pt-3 pt-md-4 pb-3 px-3 px-md-4 d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3"
+      >
+        <div>
+          <h5 class="fw-bold mb-1 text-dark fs-5">{{ title }}</h5>
+          @if (subtitle) {
+            <small class="text-muted d-block">{{ subtitle }}</small>
+          }
+        </div>
+        <!-- دکمه در سمت چپ -->
+        <div class="flex-shrink-0">
+          <ng-container
+            [ngTemplateOutlet]="effectiveHeaderActions"
+          ></ng-container>
+        </div>
+      </div>
+    }
+
+    @if (title || effectiveHeaderActions) {
+      <hr class="m-0 text-secondary opacity-10" />
+    }
+
+    <!-- بدنه جدول -->
+    <div class="card-body p-0">
+      <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+          <thead class="bg-light bg-opacity-75 text-secondary small">
+            <tr>
+              <th class="py-3 text-center" style="width: 50px">ردیف</th>
+              @for (col of columns; track col) {
+                <th
+                  class="py-3 text-nowrap"
+                  [class.text-center]="col.align === 'center'"
+                  [class.text-end]="col.align === 'end' || !col.align"
+                  [class.text-start]="col.align === 'start'"
+                  [ngStyle]="{ width: col.width }"
+                >
+                  {{ col.header }}
+                </th>
+              }
+            </tr>
+          </thead>
+          <tbody>
+            @if (items && items.length > 0) {
+              @for (item of pagedItems; track item; let i = $index) {
+                <tr>
+                  <td class="text-center text-muted fw-semibold small">
+                    {{ getRowIndex(i) }}
+                  </td>
+                  <ng-container
+                    [ngTemplateOutlet]="effectiveRowTemplate"
+                    [ngTemplateOutletContext]="{ $implicit: item, index: i }"
+                  >
+                  </ng-container>
+                </tr>
+              }
+            } @else {
+              <tr>
+                <td
+                  [attr.colspan]="columns.length + 1"
+                  class="py-5 text-center"
+                >
+                  <div
+                    class="text-muted d-flex flex-column align-items-center gap-2"
+                  >
+                    <div class="p-3 bg-light rounded-circle text-secondary">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="32"
+                        height="32"
+                        fill="currentColor"
+                        class="bi bi-inbox"
+                        viewBox="0 0 16 16"
+                      >
+                        <path
+                          d="M4.98 4a.5.5 0 0 0-.39.188L1.54 8H6a.5.5 0 0 1 .5.5 1.5 1.5 0 1 0 3 0A.5.5 0 0 1 10 8h4.46l-3.05-3.812A.5.5 0 0 0 11.02 4zm9.954 5H10.45a2.5 2.5 0 0 1-4.9 0H1.066l.32 2.562a.5.5 0 0 0 .497.438h12.234a.5.5 0 0 0 .496-.438zM3.809 3.563A1.5 1.5 0 0 1 4.981 3h6.038a1.5 1.5 0 0 1 1.172.563l3.7 4.625a1 1 0 0 1 .109 1.013l-.32 2.562A1.5 1.5 0 0 1 14.117 13H1.883a1.5 1.5 0 0 1-1.463-1.237L.099 9.201a1 1 0 0 1 .11-1.013z"
+                        />
+                      </svg>
+                    </div>
+                    <span class="fw-semibold text-secondary">{{
+                      emptyText
+                    }}</span>
+                    @if (emptyHint) {
+                      <small class="text-muted">{{ emptyHint }}</small>
+                    }
+                  </div>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ناوبری صفحات -->
+    @if (totalPages > 0) {
+      <div class="card-footer bg-white border-0 py-3 px-3 px-md-4">
+        <div
+          class="position-relative d-flex flex-column flex-md-row align-items-center justify-content-center min-height-custom"
+        >
+          <!-- دکمه‌های صفحه‌بندی در وسط -->
+          <nav class="my-1">
+            <ul
+              class="pagination pagination-sm mb-0 flex-wrap justify-content-center align-items-center gap-1"
+            >
+              <li class="page-item" [class.disabled]="currentPage === 1">
+                <button class="page-link rounded-3 px-3" (click)="prevPage()">
+                  قبلی
+                </button>
+              </li>
+              @for (page of pagesArray; track page) {
+                <li class="page-item" [class.active]="page === currentPage">
+                  <button class="page-link rounded-3" (click)="goToPage(page)">
+                    {{ page }}
+                  </button>
+                </li>
+              }
+              <li
+                class="page-item"
+                [class.disabled]="currentPage === totalPages"
+              >
+                <button class="page-link rounded-3 px-3" (click)="nextPage()">
+                  بعدی
+                </button>
+              </li>
+            </ul>
+          </nav>
+          <!-- نمایش متن شماره صفحه در سمت راست فوتر -->
+          <small
+            class="text-muted position-md-absolute end-0 pe-md-2 mt-2 mt-md-0"
+          >
+            صفحه {{ currentPage }} از {{ totalPages }}
+          </small>
+        </div>
+      </div>
+    }
+  </div>
+</div>

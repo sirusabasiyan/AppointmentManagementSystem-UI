@@ -1,0 +1,511 @@
+<div class="auth-page">
+  <div class="background-glow"></div>
+
+  <div class="auth-card-frame">
+    <div class="auth-card-content">
+      <!-- سربرگ و لوگو -->
+      <div class="brand-header">
+        <div class="brand-logo-wrap">
+          <img
+            src="assets/Logo.png"
+            alt="سامانه مدیریت نوبت‌دهی"
+            class="brand-logo-img"
+          />
+        </div>
+        <h1 class="brand-title">مدیریت نوبت‌دهی</h1>
+        <p class="brand-subtitle">
+          خوش آمدید، لطفاً وارد شوید یا ثبت‌نام کنید.
+        </p>
+      </div>
+
+      <!-- سوئیچ تب‌ها -->
+      <div class="tab-switcher">
+        <button
+          type="button"
+          class="tab-btn"
+          [class.active]="activeTab === 'login'"
+          (click)="switchTab('login')"
+        >
+          ورود
+        </button>
+        <button
+          type="button"
+          class="tab-btn"
+          [class.active]="activeTab === 'register'"
+          (click)="switchTab('register')"
+        >
+          ثبت‌نام
+        </button>
+      </div>
+
+      <!-- فرم ورود -->
+      @if (activeTab === "login") {
+        <form
+          [formGroup]="loginForm"
+          (ngSubmit)="onLoginSubmit()"
+          class="auth-form"
+          novalidate
+        >
+          <div class="form-group">
+            <label class="form-label">شماره موبایل</label>
+            <input
+              type="text"
+              pInputText
+              formControlName="mobile"
+              placeholder="0912xxxxxxx"
+              dir="ltr"
+              class="w-full text-center"
+              maxlength="11"
+              inputmode="numeric"
+              (keypress)="onlyNumbers($event)"
+              (input)="onMobileInput($event, 'mobile', 'login')"
+            />
+            @if (
+              loginForm.get("mobile")?.touched &&
+              loginForm.get("mobile")?.invalid
+            ) {
+              <small class="error-text">
+                شماره موبایل ۱۱ رقمی معتبر وارد کنید
+              </small>
+            }
+          </div>
+          <div class="form-group">
+            <label class="form-label">رمز عبور</label>
+<div class="password-field-wrapper">
+  <input
+    pInputText
+    [type]="showLoginPassword ? 'text' : 'password'"
+    formControlName="password"
+    placeholder="••••••"
+    class="password-input"
+    dir="ltr"
+  />
+<button type="button" class="password-toggle" (click)="showLoginPassword = !showLoginPassword" tabindex="-1">
+  <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true">
+    @if (showLoginPassword) {
+      <path d="M12 5c-5 0-9.3 3.1-11 7.5C2.7 16.9 7 20 12 20s9.3-3.1 11-7.5C21.3 8.1 17 5 12 5zm0 12.5A5 5 0 1 1 12 7a5 5 0 0 1 0 10.5zM12 9a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7z"/>
+    } @else {
+      <path d="M12 5c-5 0-9.3 3.1-11 7.5.6 1.5 1.6 2.8 2.8 3.9L6 14.2a5 5 0 0 1 6.7-6.7l2-2A12.6 12.6 0 0 0 12 5zm11 7.5c-.6-1.5-1.6-2.8-2.8-3.9L18 10.8a5 5 0 0 1-6.7 6.7l-2 2c.9.3 1.8.5 2.7.5 5 0 9.3-3.1 11-7.5zM3.7 2.3 2.3 3.7l18 18 1.4-1.4-18-18z"/>
+    }
+  </svg>
+</button>
+
+</div>
+
+            @if (
+              loginForm.get("password")?.touched &&
+              loginForm.get("password")?.invalid
+            ) {
+              <small class="error-text"> رمز عبور الزامی است </small>
+            }
+          </div>
+          <!-- بخش کد امنیتی (کپچا) -->
+          <div class="form-group">
+            <label class="form-label">کد امنیتی</label>
+            <div class="captcha-row">
+              <input
+                type="text"
+                pInputText
+                formControlName="captchaCode"
+                placeholder="کد تصویر"
+                class="captcha-input text-center"
+                dir="ltr"
+                maxlength="4"
+                inputmode="numeric"
+                (keypress)="onlyNumbers($event)"
+              />
+              <div class="captcha-box">
+                @if (captchaData?.captchaImage && !isCaptchaLoading) {
+                  <img
+                    [src]="captchaData?.captchaImage"
+                    alt="کپچا"
+                    class="captcha-img"
+                    (click)="refreshCaptcha()"
+                    title="برای تغییر کد کلیک کنید"
+                  />
+                }
+                @if (isCaptchaLoading) {
+                  <span class="captcha-loading-text">...</span>
+                }
+              </div>
+              <button
+                type="button"
+                class="captcha-refresh-btn"
+                (click)="refreshCaptcha()"
+                tabindex="-1"
+                [class.spinning]="isCaptchaLoading"
+                title="تغییر کد تصویر"
+                aria-label="تغییر کد امنیتی"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  class="refresh-icon"
+                  aria-hidden="true"
+                >
+                  <path
+                    fill="currentColor"
+                    d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46A7.93 7.93 0 0 0 20 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74A7.93 7.93 0 0 0 4 12c0 4.42 3.58 8 8 8v3l4-4-4-4v3z"
+                  />
+                </svg>
+              </button>
+            </div>
+            @if (
+              loginForm.get("captchaCode")?.touched &&
+              loginForm.get("captchaCode")?.invalid
+            ) {
+              <small class="error-text"> کد امنیتی ۴ رقمی الزامی است </small>
+            }
+
+            <button type="button" class="forgot-link" (click)="openForgotModal()">
+              رمز عبور را فراموش کرده‌اید؟
+            </button>
+
+          </div>
+          <button
+            type="submit"
+            pButton
+            label="ورود به سیستم"
+            class="submit-btn"
+            [loading]="isLoading"
+          ></button>
+        </form>
+      }
+
+      <!-- فرم ثبت‌نام -->
+      @if (activeTab === "register") {
+        <form
+          [formGroup]="registerForm"
+          (ngSubmit)="onRegisterSubmit()"
+          class="auth-form"
+          novalidate
+        >
+          <div class="form-row">
+            <div class="form-group col">
+              <label class="form-label">نام</label>
+              <input
+                type="text"
+                pInputText
+                formControlName="firstName"
+                class="w-full"
+                placeholder="نام"
+              />
+              @if (
+                registerForm.get("firstName")?.touched &&
+                registerForm.get("firstName")?.invalid
+              ) {
+                <small class="error-text"> نام الزامی است </small>
+              }
+            </div>
+            <div class="form-group col">
+              <label class="form-label">نام خانوادگی</label>
+              <input
+                type="text"
+                pInputText
+                formControlName="lastName"
+                class="w-full"
+                placeholder="نام خانوادگی"
+              />
+              @if (
+                registerForm.get("lastName")?.touched &&
+                registerForm.get("lastName")?.invalid
+              ) {
+                <small class="error-text"> نام خانوادگی الزامی است </small>
+              }
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">شماره موبایل</label>
+            <input
+              type="text"
+              pInputText
+              formControlName="mobile"
+              placeholder="0912xxxxxxx"
+              dir="ltr"
+              class="w-full text-center"
+              maxlength="11"
+              inputmode="numeric"
+              (keypress)="onlyNumbers($event)"
+              (input)="onMobileInput($event, 'mobile', 'register')"
+            />
+            @if (
+              registerForm.get("mobile")?.touched &&
+              registerForm.get("mobile")?.invalid
+            ) {
+              <small class="error-text">
+                شماره موبایل ۱۱ رقمی معتبر وارد کنید
+              </small>
+            }
+          </div>
+          <div class="form-row">
+            <div class="form-group col">
+              <label class="form-label">تاریخ تولد</label>
+              <app-persian-date-picker
+                formControlName="birthDate"
+                placeholder="انتخاب تاریخ تولد"
+                [isInvalid]="
+                  !!(
+                    registerForm.get('birthDate')?.touched &&
+                    registerForm.get('birthDate')?.invalid
+                  )
+                "
+              >
+              </app-persian-date-picker>
+              @if (
+                registerForm.get("birthDate")?.touched &&
+                registerForm.get("birthDate")?.invalid
+              ) {
+                <small class="error-text"> تاریخ تولد الزامی است </small>
+              }
+            </div>
+<div class="form-group col">
+  <label class="form-label">جنسیت</label>
+  <app-dropdown
+    [options]="genderOptions"
+    formControlName="gender"
+    optionLabel="label"
+    optionValue="value"
+    placeholder="انتخاب جنسیت"
+    [isInvalid]="!!(registerForm.get('gender')?.touched && registerForm.get('gender')?.invalid)"
+  ></app-dropdown>
+  @if (registerForm.get("gender")?.touched && registerForm.get("gender")?.invalid) {
+    <small class="error-text"> انتخاب جنسیت الزامی است </small>
+  }
+</div>
+
+          </div>
+<!-- بخش رمز عبور ثبت‌نام -->
+<div class="form-group">
+  <label class="form-label">رمز عبور</label>
+  <div class="password-field-wrapper">
+    <input
+      pInputText
+      [type]="showRegisterPassword ? 'text' : 'password'"
+      formControlName="password"
+      placeholder="حداقل ۶ کاراکتر"
+      class="password-input"
+      dir="ltr"
+    />
+    <button type="button" class="password-toggle" (click)="showRegisterPassword = !showRegisterPassword" tabindex="-1">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+         @if (showRegisterPassword) { <path d="M12 5c-5 0-9.3 3.1-11 7.5C2.7 16.9 7 20 12 20s9.3-3.1 11-7.5C21.3 8.1 17 5 12 5zm0 12.5A5 5 0 1 1 12 7a5 5 0 0 1 0 10.5zM12 9a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7z"/> } 
+         @else { <path d="M12 5c-5 0-9.3 3.1-11 7.5.6 1.5 1.6 2.8 2.8 3.9L6 14.2a5 5 0 0 1 6.7-6.7l2-2A12.6 12.6 0 0 0 12 5zm11 7.5c-.6-1.5-1.6-2.8-2.8-3.9L18 10.8a5 5 0 0 1-6.7 6.7l-2 2c.9.3 1.8.5 2.7.5 5 0 9.3-3.1 11-7.5zM3.7 2.3 2.3 3.7l18 18 1.4-1.4-18-18z"/> }
+      </svg>
+    </button>
+  </div>
+  @if (registerForm.get('password')?.touched && registerForm.get('password')?.invalid) {
+    <div class="error-text">
+      @if (registerForm.get('password')?.errors?.['required']) {
+        <span>رمز عبور الزامی است.</span>
+      }
+      @if (registerForm.get('password')?.errors?.['minlength']) {
+        <span>رمز عبور باید حداقل ۶ کاراکتر باشد.</span>
+      }
+    </div>
+  }
+</div>
+
+<!-- بخش تکرار رمز عبور ثبت‌نام -->
+<div class="form-group">
+  <label class="form-label">تکرار رمز عبور</label>
+  <div class="password-field-wrapper">
+    <input
+      pInputText
+      [type]="showConfirmPassword ? 'text' : 'password'"
+      formControlName="confirmPassword"
+      placeholder="••••••"
+      class="password-input"
+      dir="ltr"
+    />
+    <button type="button" class="password-toggle" (click)="showConfirmPassword = !showConfirmPassword" tabindex="-1">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+         @if (showConfirmPassword) { <path d="M12 5c-5 0-9.3 3.1-11 7.5C2.7 16.9 7 20 12 20s9.3-3.1 11-7.5C21.3 8.1 17 5 12 5zm0 12.5A5 5 0 1 1 12 7a5 5 0 0 1 0 10.5zM12 9a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7z"/> } 
+         @else { <path d="M12 5c-5 0-9.3 3.1-11 7.5.6 1.5 1.6 2.8 2.8 3.9L6 14.2a5 5 0 0 1 6.7-6.7l2-2A12.6 12.6 0 0 0 12 5zm11 7.5c-.6-1.5-1.6-2.8-2.8-3.9L18 10.8a5 5 0 0 1-6.7 6.7l-2 2c.9.3 1.8.5 2.7.5 5 0 9.3-3.1 11-7.5zM3.7 2.3 2.3 3.7l18 18 1.4-1.4-18-18z"/> }
+      </svg>
+    </button>
+  </div>
+  @if (registerForm.get('confirmPassword')?.touched && registerForm.get('confirmPassword')?.invalid) {
+    <div class="error-text">
+      @if (registerForm.get('confirmPassword')?.errors?.['required']) {
+        <span>تکرار رمز عبور الزامی است.</span>
+      }
+      @if (registerForm.get('confirmPassword')?.errors?.['passwordMismatch']) {
+        <span>تکرار رمز عبور با رمز عبور مطابقت ندارد.</span>
+      }
+    </div>
+  }
+</div>
+
+
+          <div class="form-group">
+            <label class="form-label">کد امنیتی</label>
+            <div class="captcha-row">
+              <input
+                type="text"
+                pInputText
+                formControlName="captchaCode"
+                placeholder="کد تصویر"
+                class="captcha-input text-center"
+                dir="ltr"
+                maxlength="4"
+                inputmode="numeric"
+                (keypress)="onlyNumbers($event)"
+              />
+              <div class="captcha-box">
+                @if (captchaData?.captchaImage && !isCaptchaLoading) {
+                  <img
+                    [src]="captchaData?.captchaImage"
+                    alt="کپچا"
+                    class="captcha-img"
+                    (click)="refreshCaptcha()"
+                    title="برای تغییر کد کلیک کنید"
+                  />
+                }
+                @if (isCaptchaLoading) {
+                  <span class="captcha-loading-text">...</span>
+                }
+              </div>
+              <button
+                type="button"
+                class="captcha-refresh-btn"
+                (click)="refreshCaptcha()"
+                [class.spinning]="isCaptchaLoading"
+                title="تغییر کد تصویر"
+                aria-label="تغییر کد امنیتی"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  class="refresh-icon"
+                  aria-hidden="true"
+                >
+                  <path
+                    fill="currentColor"
+                    d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46A7.93 7.93 0 0 0 20 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74A7.93 7.93 0 0 0 4 12c0 4.42 3.58 8 8 8v3l4-4-4-4v3z"
+                  />
+                </svg>
+              </button>
+            </div>
+            @if (
+              registerForm.get("captchaCode")?.touched &&
+              registerForm.get("captchaCode")?.invalid
+            ) {
+              <small class="error-text"> کد امنیتی ۴ رقمی الزامی است </small>
+            }
+          </div>
+          <button
+            type="submit"
+            pButton
+            label="ثبت‌نام و عضویت"
+            class="submit-btn"
+            [loading]="isLoading"
+          ></button>
+        </form>
+      }
+
+      <div class="card-footer">
+        <span>نسخه ۱.۰.۰</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+@if (showForgotModal) {
+  <div class="modal-backdrop-custom" (click)="closeForgotModal()">
+    <div class="modal-box" (click)="$event.stopPropagation()">
+      <h3 class="modal-title">بازیابی رمز عبور</h3>
+
+      <form [formGroup]="resetForm" (ngSubmit)="onResetSubmit()" class="auth-form" novalidate>
+        <div class="form-group">
+          <label class="form-label">شماره موبایل</label>
+          <input type="text" pInputText formControlName="mobile" dir="ltr"
+                 class="w-full text-center" maxlength="11" inputmode="numeric"
+                 placeholder="0912xxxxxxx" (keypress)="onlyNumbers($event)" />
+          @if (resetForm.get('mobile')?.touched && resetForm.get('mobile')?.invalid) {
+            <small class="error-text">شماره موبایل ۱۱ رقمی معتبر وارد کنید</small>
+          }
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">رمز عبور جدید</label>
+          <div class="password-field-wrapper">
+            <input pInputText [type]="showResetPassword ? 'text' : 'password'"
+                   formControlName="newPassword" class="password-input" dir="ltr"
+                   placeholder="حداقل ۶ کاراکتر" />
+            <button type="button" class="password-toggle" tabindex="-1"
+                    (click)="showResetPassword = !showResetPassword">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+                @if (showResetPassword) {
+                  <path d="M12 5c-5 0-9.3 3.1-11 7.5C2.7 16.9 7 20 12 20s9.3-3.1 11-7.5C21.3 8.1 17 5 12 5zm0 12.5A5 5 0 1 1 12 7a5 5 0 0 1 0 10.5zM12 9a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7z"/>
+                } @else {
+                  <path d="M12 5c-5 0-9.3 3.1-11 7.5.6 1.5 1.6 2.8 2.8 3.9L6 14.2a5 5 0 0 1 6.7-6.7l2-2A12.6 12.6 0 0 0 12 5zm11 7.5c-.6-1.5-1.6-2.8-2.8-3.9L18 10.8a5 5 0 0 1-6.7 6.7l-2 2c.9.3 1.8.5 2.7.5 5 0 9.3-3.1 11-7.5zM3.7 2.3 2.3 3.7l18 18 1.4-1.4-18-18z"/>
+                }
+              </svg>
+            </button>
+          </div>
+          @if (resetForm.get('newPassword')?.touched && resetForm.get('newPassword')?.invalid) {
+            <small class="error-text">رمز عبور باید حداقل ۶ کاراکتر باشد.</small>
+          }
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">تکرار رمز عبور جدید</label>
+          <div class="password-field-wrapper">
+            <input pInputText [type]="showResetConfirm ? 'text' : 'password'"
+                   formControlName="confirmPassword" class="password-input" dir="ltr"
+                   placeholder="••••••" />
+            <button type="button" class="password-toggle" tabindex="-1"
+                    (click)="showResetConfirm = !showResetConfirm">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+                @if (showResetConfirm) {
+                  <path d="M12 5c-5 0-9.3 3.1-11 7.5C2.7 16.9 7 20 12 20s9.3-3.1 11-7.5C21.3 8.1 17 5 12 5zm0 12.5A5 5 0 1 1 12 7a5 5 0 0 1 0 10.5zM12 9a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7z"/>
+                } @else {
+                  <path d="M12 5c-5 0-9.3 3.1-11 7.5.6 1.5 1.6 2.8 2.8 3.9L6 14.2a5 5 0 0 1 6.7-6.7l2-2A12.6 12.6 0 0 0 12 5zm11 7.5c-.6-1.5-1.6-2.8-2.8-3.9L18 10.8a5 5 0 0 1-6.7 6.7l-2 2c.9.3 1.8.5 2.7.5 5 0 9.3-3.1 11-7.5zM3.7 2.3 2.3 3.7l18 18 1.4-1.4-18-18z"/>
+                }
+              </svg>
+            </button>
+          </div>
+          @if (resetForm.get('confirmPassword')?.touched && resetForm.get('confirmPassword')?.invalid) {
+            @if (resetForm.get('confirmPassword')?.errors?.['passwordMismatch']) {
+              <small class="error-text">تکرار رمز عبور مطابقت ندارد.</small>
+            } @else {
+              <small class="error-text">تکرار رمز عبور الزامی است.</small>
+            }
+          }
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">کد امنیتی</label>
+          <div class="captcha-row">
+            <input type="text" pInputText formControlName="captchaCode" placeholder="کد تصویر"
+                   class="captcha-input text-center" dir="ltr" maxlength="4"
+                   inputmode="numeric" (keypress)="onlyNumbers($event)" />
+            <div class="captcha-box">
+              @if (resetCaptcha?.captchaImage && !isResetCaptchaLoading) {
+                <img [src]="resetCaptcha?.captchaImage" alt="کپچا" class="captcha-img"
+                     (click)="loadResetCaptcha()" />
+              }
+              @if (isResetCaptchaLoading) {
+                <span class="captcha-loading-text">...</span>
+              }
+            </div>
+            <button type="button" class="captcha-refresh-btn" tabindex="-1"
+                    [class.spinning]="isResetCaptchaLoading" (click)="loadResetCaptcha()">
+              <svg viewBox="0 0 24 24" class="refresh-icon" aria-hidden="true">
+                <path fill="currentColor" d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46A7.93 7.93 0 0 0 20 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74A7.93 7.93 0 0 0 4 12c0 4.42 3.58 8 8 8v3l4-4-4-4v3z"/>
+              </svg>
+            </button>
+          </div>
+          @if (resetForm.get('captchaCode')?.touched && resetForm.get('captchaCode')?.invalid) {
+            <small class="error-text">کد امنیتی ۴ رقمی الزامی است</small>
+          }
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="cancel-btn" (click)="closeForgotModal()">انصراف</button>
+          <button type="submit" pButton label="تغییر رمز عبور" class="submit-btn"
+                  [loading]="isResetLoading"></button>
+        </div>
+      </form>
+    </div>
+  </div>
+}

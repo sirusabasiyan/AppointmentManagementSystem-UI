@@ -1,0 +1,220 @@
+<div
+  class="modal fade"
+  [id]="modalId"
+  tabindex="-1"
+  aria-labelledby="roleModalLabel"
+  aria-hidden="true"
+  dir="rtl"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 shadow rounded-4">
+      <!-- هدر مودال -->
+      <div class="modal-header border-0 pb-0 pt-4 px-4 d-flex align-items-start justify-content-between">
+        <div class="d-flex align-items-center gap-3">
+          <div
+            class="p-2 rounded-3 bg-success-subtle text-success d-flex align-items-center justify-content-center"
+            style="width: 42px; height: 42px"
+          >
+            @if (!isEditMode) {
+              <!-- آیکون ثبت جدید -->
+              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-shield-plus" viewBox="0 0 16 16">
+                <path d="M5.338 1.59a61 61 0 0 0-2.837.856.481.481 0 0 0-.328.39c-.554 4.157.726 7.19 2.253 9.188a10.7 10.7 0 0 0 2.287 2.233c.346.244.652.42.893.533q.18.085.293.118a.55.55 0 0 0 .101.025.615.615 0 0 0 .1-.025q.114-.034.294-.118c.24-.113.547-.29.893-.533a10.7 10.7 0 0 0 2.287-2.233c1.527-1.997 2.807-5.031 2.253-9.188a.48.48 0 0 0-.328-.39c-.651-.213-1.75-.56-2.837-.855C9.552 1.29 8.531 1.067 8 1.067c-.53 0-1.552.223-2.662.524zM5.072.56C6.157.265 7.31 0 8 0s1.843.265 2.928.56c1.11.3 2.229.655 2.887.87a1.54 1.54 0 0 1 1.044 1.262c.599 4.497-.71 7.776-2.363 9.941a11.8 11.8 0 0 1-2.52 2.455c-.302.218-.635.42-.978.59l-.05.024-.009.004-.003.001a1.78 1.78 0 0 1-.884 0l-.003-.001-.009-.004-.05-.024a9.8 9.8 0 0 1-.978-.59 11.8 11.8 0 0 1-2.52-2.455C3.385 10.438 2.076 7.159 2.675 2.662A1.54 1.54 0 0 1 3.719 1.43c.658-.215 1.777-.57 2.887-.87z"/>
+                <path d="M8 5.5a.5.5 0 0 1 .5.5v1.5H10a.5.5 0 0 1 0 1H8.5V10a.5.5 0 0 1-1 0V8.5H6a.5.5 0 0 1 0-1h1.5V6a.5.5 0 0 1 .5-.5"/>
+              </svg>
+            } @else {
+              <!-- آیکون ویرایش -->
+              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293z"/>
+                <path d="M13.752 3.69 4.939 12.502a.5.5 0 0 1-.196.12l-2.414.805a.25.25 0 0 1-.316-.316l.805-2.414a.5.5 0 0 1 .12-.196L11.752 1.69z"/>
+                <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
+              </svg>
+            }
+          </div>
+          <div>
+            <h5 class="modal-title fw-bold mb-0" id="roleModalLabel">{{ modalTitle }}</h5>
+            <small class="text-muted">{{ modalSubtitle }}</small>
+          </div>
+        </div>
+
+        <button
+          type="button"
+          class="btn-close m-0"
+          data-bs-dismiss="modal"
+          aria-label="بستن"
+          id="closeRoleModalBtn"
+        ></button>
+      </div>
+
+      <!-- بدنه فرم -->
+      <form #roleForm="ngForm" (ngSubmit)="submit(roleForm)" novalidate>
+        <div class="modal-body px-4 py-3">
+          <div class="row g-3">
+            <!-- عنوان نقش فارسی -->
+            <div class="col-12">
+              <label class="form-label fw-semibold text-secondary small">
+                عنوان نقش (فارسی) <span class="text-danger">*</span>
+              </label>
+              <input
+                type="text"
+                class="form-control py-2"
+                name="title"
+                [(ngModel)]="model.title"
+                required
+                maxlength="150"
+                #titleCtrl="ngModel"
+                [ngClass]="{
+                  'is-invalid': titleCtrl.invalid && (titleCtrl.dirty || titleCtrl.touched || roleForm.submitted)
+                }"
+                placeholder="مثال: مدیر سیستم"
+              />
+              @if (titleCtrl.invalid && (titleCtrl.dirty || titleCtrl.touched || roleForm.submitted)) {
+                <div class="invalid-feedback">
+                  @if (titleCtrl.errors?.['required']) {
+                    <span>وارد کردن عنوان فارسی نقش الزامی است.</span>
+                  }
+                </div>
+              }
+            </div>
+
+            <!-- نام لاتین -->
+            <div class="col-12">
+              <label class="form-label fw-semibold text-secondary small">
+                نام لاتین (Name) <span class="text-danger">*</span>
+              </label>
+              <input
+                type="text"
+                class="form-control py-2"
+                name="name"
+                [(ngModel)]="model.name"
+                required
+                maxlength="100"
+                pattern="^[a-zA-Z0-9_-]+$"
+                #nameCtrl="ngModel"
+                [ngClass]="{
+                  'is-invalid': nameCtrl.invalid && (nameCtrl.dirty || nameCtrl.touched || roleForm.submitted)
+                }"
+                placeholder="مثال: Admin"
+                dir="ltr"
+              />
+              @if (nameCtrl.invalid && (nameCtrl.dirty || nameCtrl.touched || roleForm.submitted)) {
+                <div class="invalid-feedback">
+                  @if (nameCtrl.errors?.['required']) {
+                    <span>وارد کردن نام لاتین نقش الزامی است.</span>
+                  }
+                  @if (nameCtrl.errors?.['pattern']) {
+                    <span>نام لاتین فقط می‌تواند شامل حروف انگلیسی، اعداد، _ و - باشد.</span>
+                  }
+                </div>
+              }
+            </div>
+
+            <!-- کلید عددی -->
+            <div class="col-12 col-md-6">
+              <label class="form-label fw-semibold text-secondary small">
+                کلید عددی (GKey) <span class="text-danger">*</span>
+              </label>
+              <input
+                type="text"
+                inputmode="numeric"
+                class="form-control py-2"
+                name="gKey"
+                [(ngModel)]="model.gKey"
+                required
+                pattern="^[1-9]\d*$"
+                #gKeyCtrl="ngModel"
+                (keydown)="onlyNumbers($event)"
+                (paste)="onNumberPaste($event)"
+                [ngClass]="{
+                  'is-invalid': gKeyCtrl.invalid && (gKeyCtrl.dirty || gKeyCtrl.touched || roleForm.submitted)
+                }"
+                placeholder="مثال: 1"
+                dir="ltr"
+              />
+              @if (gKeyCtrl.invalid && (gKeyCtrl.dirty || gKeyCtrl.touched || roleForm.submitted)) {
+                <div class="invalid-feedback">
+                  @if (gKeyCtrl.errors?.['required']) {
+                    <span>کلید عددی الزامی است.</span>
+                  }
+                  @if (gKeyCtrl.errors?.['pattern']) {
+                    <span>کلید عددی باید یک عدد مثبت باشد.</span>
+                  }
+                </div>
+              }
+            </div>
+
+            <!-- نقش والد (با استفاده از دراپ‌داون اختصاصی) -->
+            <div class="col-12 col-md-6">
+              <label class="form-label fw-semibold text-secondary small">نقش والد</label>
+<!-- جایگزین کردن getter با پراپرتی -->
+<app-dropdown
+  name="parentRoleId"
+  [(ngModel)]="model.parentRoleId"
+  [options]="preparedParentOptions" 
+  placeholder="-- بدون والد (نقش ریشه) --"
+  optionLabel="label"
+  optionValue="value"
+>
+</app-dropdown>
+
+            </div>
+
+            <!-- توضیحات -->
+            <div class="col-12">
+              <label class="form-label fw-semibold text-secondary small">توضیحات</label>
+              <textarea
+                class="form-control"
+                rows="2"
+                name="description"
+                [(ngModel)]="model.description"
+                maxlength="500"
+                placeholder="توضیحات اختیاری..."
+              ></textarea>
+            </div>
+
+            <!-- وضعیت فعال بودن -->
+            <div class="col-12 pt-1">
+              <div class="form-check form-switch d-flex align-items-center gap-2 ps-0">
+                <input
+                  class="form-check-input ms-0"
+                  type="checkbox"
+                  id="isActiveRole"
+                  name="isActive"
+                  [(ngModel)]="model.isActive"
+                  style="cursor: pointer"
+                />
+                <label
+                  class="form-check-label fw-semibold text-secondary small"
+                  for="isActiveRole"
+                  style="cursor: pointer"
+                >
+                  وضعیت فعال
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- فوتر مودال و دکمه‌ها -->
+        <div class="modal-footer border-0 px-4 pb-4 pt-2">
+          <button
+            type="button"
+            class="btn btn-light px-4 py-2 text-secondary"
+            data-bs-dismiss="modal"
+          >
+            انصراف
+          </button>
+          <button
+            type="submit"
+            class="btn btn-success px-4 py-2 fw-semibold shadow-sm"
+            [disabled]="!roleForm.valid || isSubmitting"
+          >
+            @if (isSubmitting) {
+              <span class="spinner-border spinner-border-sm me-1"></span>
+            }
+            {{ submitText }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

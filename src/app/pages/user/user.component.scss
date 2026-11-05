@@ -1,0 +1,29 @@
+:host {
+  display: block;
+}
+/* اصلاح دکمه بستن در حالت راست‌چین */
+[dir="rtl"] .btn-close {
+  margin-right: auto !important;
+  margin-left: 0 !important;
+}
+
+/* افکت فوکوس روی فیلدها هماهنگ با Role */
+.form-control:focus, .form-select:focus {
+  border-color: #0d6efd; /* برای ایجاد آبی، برای ویرایش سبز */
+  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.1);
+}
+
+#updateUserModal .form-control:focus, #updateUserModal .form-select:focus {
+  border-color: #198754;
+  box-shadow: 0 0 0 0.25rem rgba(25, 135, 84, 0.1);
+}
+
+/* فونت‌های کوچک برای توضیحات */
+.x-small {
+  font-size: 0.75rem;
+}
+
+/* پس‌زمینه لطیف برای بخش نقش‌ها */
+.bg-light-subtle {
+  background-color: #f8f9fa !important;
+}

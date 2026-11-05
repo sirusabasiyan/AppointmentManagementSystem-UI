@@ -1,0 +1,13 @@
+input[type="time"] {
+  direction: ltr;
+  font-family: inherit;
+}
+
+.form-control:focus {
+  border-color: #198754;
+  box-shadow: 0 0 0 0.2rem rgba(25, 135, 84, 0.15);
+}
+
+.card {
+  transition: all 0.2s ease-in-out;
+}

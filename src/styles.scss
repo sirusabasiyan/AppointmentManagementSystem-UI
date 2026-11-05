@@ -1,0 +1,491 @@
+/* ==========================================================================
+   ۱. فونت و پایه‌ها
+   ========================================================================== */
+@font-face {
+  font-family: 'Vazir';
+  src: url('./assets/fonts/Vazir.eot');
+  src: url('./assets/fonts/Vazir.eot') format('embedded-opentype'),
+       url('./assets/fonts/Vazir.woff') format('woff'),
+       url('./assets/fonts/Vazir.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+body {
+  font-family: 'Vazir', system-ui, -apple-system, sans-serif !important;
+  background-color: #f8fafc;
+}
+
+/* ==========================================================================
+   ۲. پیام‌های اعلان (PrimeNG Toast)
+   ========================================================================== */
+.p-toast .p-toast-message {
+  border-radius: 10px !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.10) !important;
+  font-size: 0.9rem !important;
+  padding: 12px 14px !important;
+}
+
+.p-toast .p-toast-message.p-toast-message-success {
+  background: #f0fdf4 !important;
+  border: none !important;
+  border-left: 4px solid #22c55e !important;
+  color: #166534 !important;
+}
+
+.p-toast .p-toast-message.p-toast-message-error {
+  background: #fef2f2 !important;
+  border: none !important;
+  border-left: 4px solid #ef4444 !important;
+  color: #991b1b !important;
+}
+
+.p-toast .p-toast-message.p-toast-message-success .p-toast-message-icon {
+  color: #22c55e !important;
+  font-size: 1.1rem !important;
+}
+
+.p-toast .p-toast-message.p-toast-message-error .p-toast-message-icon {
+  color: #ef4444 !important;
+  font-size: 1.1rem !important;
+}
+
+.p-toast .p-toast-message .p-toast-icon-close {
+  width: 20px !important;
+  height: 20px !important;
+  border-radius: 50% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  opacity: 0.5 !important;
+  transition: opacity 0.2s !important;
+}
+
+.p-toast .p-toast-message .p-toast-icon-close:hover {
+  opacity: 1 !important;
+  background: rgba(0,0,0,0.06) !important;
+}
+
+.p-toast .p-toast-message .p-toast-icon-close .p-icon {
+  width: 12px !important;
+  height: 12px !important;
+}
+
+.p-toast .p-toast-summary {
+  font-size: 0.9rem !important;
+  font-weight: 600 !important;
+}
+
+.p-toast .p-toast-detail {
+  font-size: 0.8rem !important;
+  margin-top: 2px !important;
+  opacity: 0.8 !important;
+}
+
+/* ==========================================================================
+   ۳. استایل سراسری ورودی‌ها و فرم‌ها
+   ========================================================================== */
+input[type="time"],
+input[type="date"] {
+  direction: ltr;
+  text-align: center;
+  font-family: inherit;
+}
+
+.form-control:focus,
+.p-inputtext:focus {
+  border-color: #198754 !important;
+  box-shadow: 0 0 0 0.2rem rgba(25, 135, 84, 0.15) !important;
+}
+
+.form-card {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  margin-bottom: 1.5rem;
+  direction: rtl;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 1rem;
+  width: 100%;
+}
+
+.col-12 { grid-column: span 12; }
+.col-6  { grid-column: span 6; }
+.col-4  { grid-column: span 4; }
+.col-3  { grid-column: span 3; }
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  width: 100%;
+}
+
+.form-group label,
+.form-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #4b5563;
+  margin-bottom: 0.25rem;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea,
+.form-group .p-inputtext,
+.form-group .p-dropdown,
+.form-group .p-calendar,
+.form-group .p-multiselect,
+.form-group .p-inputnumber {
+  width: 100% !important;
+}
+
+.form-error {
+  font-size: 0.78rem;
+  color: #ef4444;
+  margin-top: 0.25rem;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+  flex-wrap: wrap;
+}
+
+/* ==========================================================================
+   ۴. استایل سراسری جدول‌ها و اسکرول موبایل (Table Responsive)
+   ========================================================================== */
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* جدول نباید بیش از حد جمع شود تا داده‌ها نشکنند */
+.table-responsive table {
+  min-width: 520px;
+}
+
+/* نوار اسکرول باریک و زیبا برای جدول در موبایل */
+.table-responsive::-webkit-scrollbar {
+  height: 6px;
+}
+.table-responsive::-webkit-scrollbar-thumb {
+  background: #d4d4d4;
+  border-radius: 4px;
+}
+.table-responsive::-webkit-scrollbar-track {
+  background: #f5f5f5;
+}
+
+
+/* ==========================================================================
+   ۵. Breakpoints (موبایل و تبلت)
+   ========================================================================== */
+@media (max-width: 992px) {
+  .col-4,
+  .col-3 {
+    grid-column: span 6;
+  }
+}
+
+@media (max-width: 768px) {
+  .col-6,
+  .col-4,
+  .col-3 {
+    grid-column: span 12;
+  }
+
+  .form-actions {
+    flex-direction: column-reverse;
+  }
+
+  .form-actions button,
+  .form-actions .p-button {
+    width: 100% !important;
+  }
+
+  .modal-dialog {
+    margin: 0.75rem;
+  }
+
+  .modal-footer {
+    flex-direction: column-reverse;
+    gap: 0.5rem;
+  }
+
+  .modal-footer .btn {
+    width: 100% !important;
+    margin: 0 !important;
+  }
+
+  /* تنظیم فاصله کانتینر جدول در موبایل برای باز شدن فضای بیشتر */
+  .container {
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+  }
+
+  .card-header,
+  .card-footer {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+}
+
+/* متغیرهای رنگی برای حالت روشن (Light) */
+:root {
+  --app-bg: #f8fafc;
+  --app-surface: #ffffff;
+  --app-text: #1e293b;
+  --app-text-muted: #64748b;
+  --app-border: #e2e8f0;
+  --app-hover: #f1f5f9;
+}
+
+/* متغیرهای رنگی برای حالت تیره (Dark) */
+[data-bs-theme="dark"] {
+  --app-bg: #0f172a;
+  --app-surface: #1e293b;
+  --app-text: #f8fafc;
+  --app-text-muted: #94a3b8;
+  --app-border: #334155;
+  --app-hover: #334155;
+}
+
+/* اعمال روی کل صفحه */
+html, body {
+  background-color: var(--app-bg) !important;
+  color: var(--app-text) !important;
+  font-family: 'Vazir', sans-serif;
+  margin: 0;
+  padding: 0;
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+/* کارت و کانتینرهای سفید پروژه در حالت دارک */
+[data-bs-theme="dark"] .card,
+[data-bs-theme="dark"] .bg-white,
+[data-bs-theme="dark"] .bg-light,
+[data-bs-theme="dark"] .main-content-card,
+[data-bs-theme="dark"] .content-wrapper {
+  background-color: var(--app-surface) !important;
+  color: var(--app-text) !important;
+  border-color: var(--app-border) !important;
+}
+
+/* اصلاح سایدبار در حالت دارک */
+[data-bs-theme="dark"] .sidebar,
+[data-bs-theme="dark"] aside,
+[data-bs-theme="dark"] .sidebar-container {
+  background-color: var(--app-surface) !important;
+  border-color: var(--app-border) !important;
+  color: var(--app-text) !important;
+}
+
+[data-bs-theme="dark"] .sidebar .nav-link {
+  color: var(--app-text-muted) !important;
+}
+
+[data-bs-theme="dark"] .sidebar .nav-link:hover,
+[data-bs-theme="dark"] .sidebar .nav-link.active {
+  background-color: var(--app-hover) !important;
+  color: #38bdf8 !important;
+}
+
+/* استایل دهی به جدول در حالت تیره */
+[data-bs-theme="dark"] .table {
+  color: var(--app-text) !important;
+  --bs-table-bg: transparent;
+  --bs-table-striped-bg: rgba(255, 255, 255, 0.02);
+  --bs-table-hover-bg: rgba(255, 255, 255, 0.04);
+  border-color: var(--app-border) !important;
+}
+
+[data-bs-theme="dark"] .table th,
+[data-bs-theme="dark"] .table td {
+  border-color: var(--app-border) !important;
+  color: var(--app-text) !important;
+}
+
+/* ساعت‌ها و بج‌های داخل جدول */
+[data-bs-theme="dark"] .badge-time,
+[data-bs-theme="dark"] .time-slot-badge {
+  background-color: #0f172a !important;
+  color: #38bdf8 !important;
+  border: 1px solid var(--app-border);
+}
+
+/* ==========================================================================
+   رفع مشکل تیرگی متن‌ها در دارک‌مود
+   ========================================================================== */
+[data-bs-theme="dark"] h1,
+[data-bs-theme="dark"] h2,
+[data-bs-theme="dark"] h3,
+[data-bs-theme="dark"] h4,
+[data-bs-theme="dark"] h5,
+[data-bs-theme="dark"] h6,
+[data-bs-theme="dark"] .card-title,
+[data-bs-theme="dark"] .table-title {
+  color: #f8fafc !important;
+}
+
+/* اصلاح رنگ متن توضیحات زیر تیتر جدول */
+[data-bs-theme="dark"] .text-muted,
+[data-bs-theme="dark"] small,
+[data-bs-theme="dark"] p.text-secondary {
+  color: #94a3b8 !important;
+}
+
+/* اصلاح کلاس‌های پیش‌فرض متن مشکی در دارک‌مود */
+[data-bs-theme="dark"] .text-dark {
+  color: #f8fafc !important;
+}
+
+/* اصلاح ستون‌ها و هدرهای جدول جنریک */
+[data-bs-theme="dark"] .generic-table thead th,
+[data-bs-theme="dark"] table thead th {
+  color: #cbd5e1 !important;
+  background-color: rgba(255, 255, 255, 0.03) !important;
+}
+
+[data-bs-theme="dark"] .generic-table tbody td,
+[data-bs-theme="dark"] table tbody td {
+  color: #e2e8f0 !important;
+}
+
+
+[data-theme="dark"],
+body.dark-theme {
+  --bg-primary: #0f172a;      /* رنگ پس‌زمینه اصلی کل صفحه */
+  --bg-surface: #1e293b;      /* رنگ پس‌زمینه کارت‌ها و محتوای مودال */
+  --text-primary: #f8fafc;    /* رنگ متن اصلی */
+  --text-secondary: #94a3b8;  /* رنگ متن کم‌رنگ */
+  --border-color: #334155;    /* رنگ کادرها و خطوط جداکننده */
+}
+
+
+/* ==========================================================================
+   Global Dark Theme Overrides for Modals (Bootstrap & PrimeNG)
+   ========================================================================== */
+
+/* ==========================================================================
+   مودال‌ها و دراپ‌داون (فقط در حالت تیره تیره می‌شوند)
+   ========================================================================== */
+
+/* رنگ‌های تیره (فقط برای استفاده در حالت دارک) */
+:root {
+  --app-bg-dark: #0f172a;
+  --app-surface-dark: #1e293b;
+  --app-border-dark: #334155;
+  --app-text-main: #f8fafc;
+}
+
+/* مودال بوت‌استرپ */
+[data-bs-theme="dark"] .modal-content {
+  background-color: var(--app-bg-dark) !important;
+  color: var(--app-text-main) !important;
+  border: 1px solid var(--app-border-dark) !important;
+}
+[data-bs-theme="dark"] .modal-header {
+  border-bottom: 1px solid var(--app-border-dark) !important;
+  background-color: var(--app-bg-dark) !important;
+  color: var(--app-text-main) !important;
+}
+[data-bs-theme="dark"] .modal-footer {
+  border-top: 1px solid var(--app-border-dark) !important;
+  background-color: var(--app-bg-dark) !important;
+}
+[data-bs-theme="dark"] .modal-header .btn-close {
+  filter: invert(1) grayscale(100%) brightness(200%);
+}
+
+/* دیالوگ PrimeNG */
+[data-bs-theme="dark"] .p-dialog .p-dialog-header,
+[data-bs-theme="dark"] .p-dialog .p-dialog-content,
+[data-bs-theme="dark"] .p-dialog .p-dialog-footer {
+  background-color: var(--app-bg-dark) !important;
+  color: var(--app-text-main) !important;
+}
+
+/* فیلدهای داخل مودال */
+[data-bs-theme="dark"] .modal-content .form-control,
+[data-bs-theme="dark"] .modal-content .form-select,
+[data-bs-theme="dark"] .p-dialog .p-inputtext {
+  background-color: var(--app-surface-dark) !important;
+  border-color: var(--app-border-dark) !important;
+  color: var(--app-text-main) !important;
+}
+
+/* پنل دراپ‌داون: حالت روشن */
+.my-custom-dropdown-panel {
+  direction: rtl;
+  text-align: right;
+  border-radius: 12px;
+  background-color: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+  z-index: 2000 !important;
+}
+.my-custom-dropdown-panel .p-autocomplete-items { padding: 6px; margin: 0; }
+.my-custom-dropdown-panel .p-autocomplete-item {
+  padding: 10px 14px;
+  font-size: 0.9rem;
+  color: #1e293b !important;
+  background: transparent !important;
+  border-radius: 8px;
+  margin-bottom: 2px;
+  cursor: pointer;
+}
+.my-custom-dropdown-panel .p-autocomplete-item:hover,
+.my-custom-dropdown-panel .p-autocomplete-item.p-highlight {
+  background: rgba(16, 185, 129, 0.15) !important;
+  color: #10b981 !important;
+}
+
+/* پنل دراپ‌داون: حالت تیره */
+[data-bs-theme="dark"] .my-custom-dropdown-panel {
+  background-color: var(--app-surface-dark) !important;
+  border-color: var(--app-border-dark) !important;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+}
+[data-bs-theme="dark"] .my-custom-dropdown-panel .p-autocomplete-item {
+  color: var(--app-text-main) !important;
+}
+
+/* مخفی کردن متن «items selected» در هر جایی که PrimeNG بگذارد */
+.p-hidden-accessible,
+.p-autocomplete-panel ~ .p-hidden-accessible,
+span[role="status"][aria-live] {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  margin: -1px !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+/* متغیرهای دراپ‌داون و ورودی‌ها */
+:root {
+  --input-bg: #ffffff;
+  --input-border: #cbd5e1;
+  --text-main: #1e293b;
+  --text-muted: #64748b;
+}
+
+[data-bs-theme="dark"] {
+  --input-bg: #1e293b;
+  --input-border: #334155;
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+}

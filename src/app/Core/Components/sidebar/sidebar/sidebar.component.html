@@ -1,0 +1,87 @@
+<!-- پس‌زمینه نیمه‌شفاف برای موبایل (Backdrop Overlay) -->
+<div
+  class="sidebar-backdrop d-lg-none"
+  [class.show]="sidebarService.isOpen$ | async"
+  (click)="sidebarService.close()"
+></div>
+
+<!-- بدنه سایدبار -->
+<aside class="sidebar-container" [class.open]="sidebarService.isOpen$ | async">
+  <div
+    class="sidebar-header d-flex align-items-center justify-content-between p-3 border-bottom"
+  >
+    <span class="fw-bold fs-6">منوی دسترسی</span>
+    <!-- دکمه بستن فقط در موبایل نمایش داده می‌شود -->
+    <button
+      type="button"
+      class="btn-close d-lg-none"
+      aria-label="Close"
+      (click)="sidebarService.close()"
+    ></button>
+  </div>
+
+  <div class="sidebar-menu p-2">
+    <ul class="nav flex-column gap-1">
+      <!-- داشبورد / صفحه اصلی -->
+      @if (permissionService.hasPermission(permissions.Dashboard.View)) {
+        <li class="nav-item">
+          <a
+            class="nav-link text-dark rounded d-flex align-items-center gap-2"
+            routerLink="/admin/dashboard"
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: true }"
+            (click)="closeSidebarOnMobile()"
+          >
+            <i class="pi pi-home"></i>
+            <span>صفحه اصلی</span>
+          </a>
+        </li>
+      }
+
+      <!-- زمان‌های ملاقات -->
+      @if (permissionService.hasPermission(permissions.Appointments.View)) {
+        <li class="nav-item">
+          <a
+            class="nav-link text-dark rounded d-flex align-items-center gap-2"
+            routerLink="/admin/AppointmentTime"
+            routerLinkActive="active"
+            (click)="closeSidebarOnMobile()"
+          >
+            <i class="pi pi-calendar-clock"></i>
+            <span>زمان‌های ملاقات</span>
+          </a>
+        </li>
+      }
+
+      <!-- نقش‌ها (Roles) -->
+      @if (permissionService.hasPermission(permissions.Roles.View)) {
+        <li class="nav-item">
+          <a
+            class="nav-link text-dark rounded d-flex align-items-center gap-2"
+            routerLink="/admin/role"
+            routerLinkActive="active"
+            (click)="closeSidebarOnMobile()"
+          >
+            <i class="pi pi-shield"></i>
+            <span>نقش‌ها</span>
+          </a>
+        </li>
+      }
+
+      <!-- کاربران (Users) -->
+      @if (permissionService.hasPermission(permissions.Users.View)) {
+        <li class="nav-item">
+          <a
+            class="nav-link text-dark rounded d-flex align-items-center gap-2"
+            routerLink="/admin/user"
+            routerLinkActive="active"
+            (click)="closeSidebarOnMobile()"
+          >
+            <i class="pi pi-users"></i>
+            <span>کاربران</span>
+          </a>
+        </li>
+      }
+    </ul>
+  </div>
+</aside>

@@ -1,0 +1,16 @@
+<div class="field w-100 mb-0 persian-datepicker-wrapper">
+  @if (label) {
+    <label class="form-label font-medium mb-2 d-block">{{ label }}</label>
+  }
+
+  <ng-persian-datepicker>
+    <input
+      type="text"
+      [class]="inputClass"
+      class="p-inputtext p-component w-100 text-center"
+      [class.is-invalid]="isInvalid"
+      [placeholder]="placeholder"
+      [formControl]="innerControl"
+    />
+  </ng-persian-datepicker>
+</div>

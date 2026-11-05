@@ -1,0 +1,149 @@
+<div
+  class="modal fade"
+  id="rolePermissionsModal"
+  tabindex="-1"
+  aria-labelledby="rolePermissionsModalLabel"
+  aria-hidden="true"
+  dir="rtl"
+>
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+    <div class="modal-content border-0 shadow-lg rounded-4">
+      
+      <!-- هدر با آیکون کلید SVG -->
+      <div class="modal-header border-0 pb-2 pt-4 px-4 d-flex align-items-center justify-content-between">
+        <div class="d-flex align-items-center gap-3">
+          <div class="p-2 rounded-3 bg-success-subtle text-success d-flex align-items-center justify-content-center" style="width: 44px; height: 44px; min-width: 44px;">
+            <svg
+              class="rp-key-icon"
+              xmlns="http://www.w3.org/2000/svg"
+              width="22"
+              height="22"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.778-7.778zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"></path>
+            </svg>
+          </div>
+          <div>
+            <h5 class="modal-title fw-bold mb-1">مدیریت دسترسی فرم‌های سیستم</h5>
+            @if (role) {
+              <small class="text-muted">نقش: <strong class="text-light">{{ role.title }}</strong></small>
+            }
+          </div>
+        </div>
+        <button type="button" class="btn-close m-0" data-bs-dismiss="modal" id="closePermissionsModalBtn"></button>
+      </div>
+
+      <!-- بدنه -->
+      <div class="modal-body px-4 py-3">
+        
+        <!-- نوار ابزار بالا -->
+        <div class="d-flex align-items-center justify-content-between gap-2 mb-3 p-2 rounded-3 border rp-toolbar">
+          <button type="button" class="btn btn-sm btn-outline-success rounded-pill px-3" (click)="selectAll(true)">
+            انتخاب همه
+          </button>
+          <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-3 py-2">
+            {{ selectedCount }} دسترسی فعال
+          </span>
+          <button type="button" class="btn btn-sm btn-outline-secondary rounded-pill px-3" (click)="selectAll(false)">
+            لغو همه
+          </button>
+        </div>
+
+        @if (isLoading) {
+          <div class="text-center py-5">
+            <div class="spinner-border text-success" role="status"></div>
+            <p class="text-muted mt-3 mb-0">در حال دریافت لیست دسترسی‌ها...</p>
+          </div>
+        }
+
+        <!-- لیست ماژول‌ها و فرزندان به صورت کارت‌های مدرن درختی -->
+        @if (!isLoading) {
+          <div class="rp-groups-container">
+            <div class="d-flex flex-column gap-3">
+              @for (form of formItems; track form.guid) {
+                <div 
+                  class="card border rounded-3 rp-form-card overflow-hidden" 
+                  [class.active-card]="form.isAssigned"
+                >
+                  <!-- هدر کارت (ماژول اصلی) -->
+<div class="p-3 d-flex align-items-center justify-content-between bg-body-tertiary">
+
+                    <div class="d-flex align-items-center gap-2">
+                      <i class="bi bi-folder2-open text-success fs-5"></i>
+                      <span class="fw-bold fs-6">{{ form.title }}</span>
+                    </div>
+
+                    <div class="form-check form-switch m-0 fs-5" (click)="$event.stopPropagation()">
+                      <input
+                        class="form-check-input rp-switch"
+                        type="checkbox"
+                        role="switch"
+                        [checked]="form.isAssigned"
+                        (change)="toggleModule(form)"
+                      />
+                    </div>
+                  </div>
+
+                  <!-- بدنه کارت (زیرمجموعه‌ها / فرزندان CRUD) -->
+                  @if (form.children && form.children.length > 0) {
+                    <div class="p-3 bg-body border-top row g-2">
+                      @for (child of form.children; track child.guid) {
+                        <div class="col-md-6 col-lg-3">
+                          <div 
+                            class="child-permission-box p-2 rounded-2 border d-flex align-items-center justify-content-between cursor-pointer"
+                            [class.child-active]="child.isAssigned"
+                          >
+                            <span class="small fw-semibold text-secondary">{{ child.title }}</span>
+                            <div class="form-check form-switch m-0" (click)="$event.stopPropagation()">
+                              <input
+                                class="form-check-input rp-switch-sm"
+                                type="checkbox"
+                                role="switch"
+                                [checked]="child.isAssigned"
+                                (change)="toggleChild(form, child)"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      }
+                    </div>
+                  }
+                </div>
+              }
+
+              @if (formItems.length === 0) {
+                <div class="text-center text-muted py-5">دسترسی‌ای یافت نشد.</div>
+              }
+            </div>
+          </div>
+        }
+
+      </div>
+
+      <!-- فوتر -->
+      <div class="modal-footer border-0 px-4 pb-4 pt-2">
+        <button type="button" class="btn btn-light px-4 py-2 text-secondary" data-bs-dismiss="modal">
+          انصراف
+        </button>
+        <button
+          type="button"
+          class="btn btn-success px-4 py-2 fw-semibold shadow-sm"
+          (click)="savePermissions()"
+          [disabled]="isSaving"
+        >
+          @if (isSaving) {
+            <span class="spinner-border spinner-border-sm me-1"></span>
+          }
+          ذخیره دسترسی‌ها
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
