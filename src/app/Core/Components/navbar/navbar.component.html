@@ -7,8 +7,15 @@
       <!-- نمایش نام و نقش کاربر (تنها در صورت لاگین بودن) -->
       @if (currentUser$ | async; as user) {
         <div class="user-profile-badge d-flex align-items-center gap-2">
-          <button type="button" class="user-profile-badge d-flex align-items-center gap-2 border-0 bg-transparent"
-        (click)="openProfile(user)" title="ویرایش پروفایل">
+        <!-- اضافه کردن دیتا اتریبیوت‌ها برای باز کردن مدال -->
+        <button type="button" 
+                class="user-profile-badge d-flex align-items-center gap-2 border-0 bg-transparent"
+                (click)="prepareProfile(user)" 
+                data-bs-toggle="modal" 
+                data-bs-target="#profileModal"
+                title="ویرایش پروفایل">
+          <!-- بقیه محتویات دکمه -->
+
           <span class="user-avatar-icon">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -131,7 +138,7 @@
       }
 
       <!-- لوگو -->
-      <a class="navbar-brand m-0 d-flex align-items-center" routerLink="/">
+      <a class="navbar-brand m-0 d-flex align-items-center" routerLink="/index">
         <img
           src="assets/Logo.png"
           width="38"

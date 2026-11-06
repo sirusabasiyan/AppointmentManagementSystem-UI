@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { UserService } from 'src/app/Core/Services/user.service';
@@ -20,6 +20,7 @@ export class UserFormComponent implements OnChanges {
 
   @Output() saved = new EventEmitter<'create' | 'edit'>();
   @Output() operationError = new EventEmitter<string>();
+  @ViewChild('userForm') userFormDirective?: NgForm;
 
   get closeBtnId(): string {
     return this.modalId + '_closeBtn';
@@ -53,7 +54,10 @@ export class UserFormComponent implements OnChanges {
     { label: 'زن', value: 2 }
   ];
 
-  constructor(private userService: UserService) {}
+  constructor(
+    private userService: UserService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   get isEditMode(): boolean {
     return this.mode === 'edit' && !!this.model.guid;
@@ -102,18 +106,20 @@ export class UserFormComponent implements OnChanges {
     this.resetModel();
   }
 
-  openForEdit(user: User): void {
-    this.mode = 'edit';
-    this.user = user;
-    this.fillModelFromUser(user);
-  }
+openForEdit(user: User): void {
+  this.mode = 'edit';
+  this.user = user;
+  this.fillModelFromUser(user);
+  this.cdr.detectChanges(); // اجبار به سینک شدن متغیرها با اینپوت‌های html
+}
+
 
   private fillModelFromUser(u: User): void {
     this.isRolesTouched = false;
     this.selectedAvatarFile = null;
     this.avatarPreview = null;
 
-    this.model = {
+    const populatedModel = {
       guid: u.guid,
       mobile: u.mobile ?? '',
       password: '',
@@ -127,7 +133,29 @@ export class UserFormComponent implements OnChanges {
       avatar: u.avatar,
       roleIds: u.roleIds ? [...u.roleIds] : []
     };
+
+    this.model = populatedModel;
+
+    // ۱. اجبار به اعمال تغییرات روی متغیرها
+    this.cdr.detectChanges();
+
+    // ۲. حل مشکل بار اول NgForm:
+    // اگر فرم از قبل کنترل‌ها را در اختیار گرفته، مستقیماً مقادیر را روی فرم سینک کن
+    if (this.userFormDirective?.form) {
+      this.userFormDirective.form.patchValue({
+        mobile: populatedModel.mobile,
+        firstName: populatedModel.firstName,
+        lastName: populatedModel.lastName,
+        nationalCode: populatedModel.nationalCode,
+        gender: populatedModel.gender,
+        birthDate: populatedModel.birthDate,
+        email: populatedModel.email
+      });
+      this.cdr.detectChanges();
+    }
   }
+
+
 
   private getInitialModel() {
     return {

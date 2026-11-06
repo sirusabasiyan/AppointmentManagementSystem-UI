@@ -10,10 +10,14 @@ import { guestGuard } from './Core/Guards/guest.guard';
 import { permissionGuard } from './Core/Guards/permission.guard';
 import { AppPermissions } from './Core/constants/app-permissions.constants';
 import { DashboardComponent } from './pages/dashboard/dashboard';
+import { IndexComponent } from './pages/Index';
 
 const routes: Routes = [
   // صفحه لاگین (بدون گارد برای مهمان)
   { path: 'login', component: AuthComponent, canActivate: [guestGuard] },
+
+    // صفحه اصلی سایت (بدون سایدبار ادمین)
+  { path: 'index', component: IndexComponent },
 
   // مسیرهای محافظت‌شده پنل ادمین
   {

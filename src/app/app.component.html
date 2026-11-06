@@ -1,22 +1,19 @@
-<div class="d-flex flex-column vh-100 overflow-hidden" dir="rtl">
-  <app-navbar></app-navbar>
+@if (isAdminRoute) {
+  <div class="d-flex flex-column vh-100 overflow-hidden" dir="rtl">
+    <app-navbar></app-navbar>
 
-  <div class="d-flex flex-grow-1 overflow-hidden position-relative">
-    @if (!isLoginPage) {
+    <div class="d-flex flex-grow-1 overflow-hidden position-relative">
       <app-sidebar></app-sidebar>
-    }
 
-    <main
-      class="flex-grow-1"
-      [class.login-main]="isLoginPage"
-      [class.overflow-auto]="!isLoginPage"
-      [class.bg-light]="!isLoginPage"
-      [class.p-3]="!isLoginPage"
-    >
-      <router-outlet></router-outlet>
-    </main>
+      <main class="flex-grow-1 overflow-auto bg-light p-3">
+        <router-outlet></router-outlet>
+      </main>
+    </div>
   </div>
-</div>
+} @else {
+  <!-- برای صفحه اصلی (Index) و لاگین که نباید سایدبار و نوبار ادمین را داشته باشند -->
+  <router-outlet></router-outlet>
+}
 
 <p-toast position="top-right"></p-toast>
 <app-loading></app-loading>

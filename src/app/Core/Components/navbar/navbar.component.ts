@@ -58,4 +58,17 @@ onProfileSaved(): void {
   onProfileError(msg: string): void {
     alert(msg); // یا toast پروژه‌تان
   }
+
+  // فقط داده‌ها را لود کنید، باز شدن مدال را به HTML بسپارید
+prepareProfile(user: CurrentUser): void {
+  if (!user?.id) return;
+  this.userService.getById(user.id).subscribe({
+    next: (u) => {
+      this.profileForm.openForEdit(u);
+      // دیگر نیازی به خط bootstrap.Modal نیست
+    },
+    error: () => alert('خطا در دریافت اطلاعات کاربر')
+  });
+}
+
 }

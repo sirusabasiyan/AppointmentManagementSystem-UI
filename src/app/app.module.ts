@@ -24,6 +24,7 @@ import { RoleFormComponent } from './pages/role/RoleFormComponent/role-form.comp
 import { UserFormComponent } from './pages/user/UserFormComponent/user-form.component';
 import { LoadingComponent } from './Core/Components/Loading/loading.component';
 import { LoadingInterceptor } from './Core/Interceptors/loading.interceptor';
+import { IndexComponent } from './pages/Index';
 
 @NgModule({ declarations: [
         AppComponent,
@@ -37,6 +38,7 @@ import { LoadingInterceptor } from './Core/Interceptors/loading.interceptor';
         UserComponent,
         UserFormComponent,
         DashboardComponent,
+        IndexComponent
         // PersianDatePickerComponent از اینجا حذف شد چون اکنون Standalone است
     ],
     bootstrap: [AppComponent], 
