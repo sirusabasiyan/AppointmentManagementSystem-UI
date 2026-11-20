@@ -24,5 +24,10 @@ export const AppPermissions = {
     Create: 'Users.Create',
     Edit: 'Users.Edit',
     Delete: 'Users.Delete'
+  },
+
+  Profile: {
+    View: 'Profile.View',
+    Edit: 'Profile.Edit'
   }
 };

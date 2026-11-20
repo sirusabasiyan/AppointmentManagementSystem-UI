@@ -82,6 +82,24 @@
           </a>
         </li>
       }
+
+      <!-- پروفایل من -->
+      @if (permissionService.hasPermission(permissions.Profile.View)) {
+        <li class="nav-item">
+          <a
+            class="nav-link text-dark rounded d-flex align-items-center gap-2"
+            routerLink="/admin/my-profile"
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: true }"
+            (click)="closeSidebarOnMobile()"
+          >
+            <i class="pi pi-user" aria-hidden="true"></i>
+            <span>پروفایل من</span>
+          </a>
+        </li>
+      }
+
+
     </ul>
   </div>
 </aside>

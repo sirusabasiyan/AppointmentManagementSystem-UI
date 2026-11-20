@@ -11,6 +11,7 @@ import { permissionGuard } from './Core/Guards/permission.guard';
 import { AppPermissions } from './Core/constants/app-permissions.constants';
 import { DashboardComponent } from './pages/dashboard/dashboard';
 import { IndexComponent } from './pages/Index';
+import { ProfileComponent } from './pages/Profile/profile.component';
 
 const routes: Routes = [
   // صفحه لاگین (بدون گارد برای مهمان)
@@ -48,6 +49,14 @@ const routes: Routes = [
         canActivate: [permissionGuard],
         data: { permission: AppPermissions.Users.View }
       },
+      {
+        path: 'my-profile',
+        component: ProfileComponent,
+        canActivate: [permissionGuard],
+        data: { permission: AppPermissions.Profile.View }
+      },
+
+
 
       // اگر کاربر آدرس /admin را به تنهایی در مرورگر زد:
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }

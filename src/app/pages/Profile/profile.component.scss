@@ -1,0 +1,16 @@
+:host {
+  display: block;
+}
+
+.container {
+  max-width: 960px;
+}
+
+.form-control:focus {
+  border-color: #198754;
+  box-shadow: 0 0 0 .2rem rgba(25, 135, 84, .15);
+}
+
+.alert {
+  white-space: pre-line;
+}

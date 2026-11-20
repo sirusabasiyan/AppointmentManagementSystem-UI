@@ -1,19 +1,20 @@
-@if (isAdminRoute) {
-  <div class="d-flex flex-column vh-100 overflow-hidden" dir="rtl">
-    <app-navbar></app-navbar>
-
-    <div class="d-flex flex-grow-1 overflow-hidden position-relative">
-      <app-sidebar></app-sidebar>
-
-      <main class="flex-grow-1 overflow-auto bg-light p-3">
-        <router-outlet></router-outlet>
-      </main>
-    </div>
-  </div>
-} @else {
-  <!-- برای صفحه اصلی (Index) و لاگین که نباید سایدبار و نوبار ادمین را داشته باشند -->
-  <router-outlet></router-outlet>
+@if (!isHomeRoute) {
+  <app-navbar></app-navbar>
 }
+
+<div class="d-flex flex-grow-1 overflow-hidden position-relative" dir="rtl">
+  @if (isAdminRoute) {
+    <app-sidebar></app-sidebar>
+
+    <main class="flex-grow-1 overflow-auto bg-light p-3">
+      <router-outlet></router-outlet>
+    </main>
+  } @else {
+    <main class="w-100 overflow-auto">
+      <router-outlet></router-outlet>
+    </main>
+  }
+</div>
 
 <p-toast position="top-right"></p-toast>
 <app-loading></app-loading>

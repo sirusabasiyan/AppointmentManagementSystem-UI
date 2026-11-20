@@ -25,8 +25,10 @@ import { UserFormComponent } from './pages/user/UserFormComponent/user-form.comp
 import { LoadingComponent } from './Core/Components/Loading/loading.component';
 import { LoadingInterceptor } from './Core/Interceptors/loading.interceptor';
 import { IndexComponent } from './pages/Index';
+import { ProfileComponent } from './pages/Profile/profile.component';
 
-@NgModule({ declarations: [
+@NgModule({ 
+    declarations: [
         AppComponent,
         NavbarComponent,
         SidebarComponent,
@@ -38,7 +40,8 @@ import { IndexComponent } from './pages/Index';
         UserComponent,
         UserFormComponent,
         DashboardComponent,
-        IndexComponent
+        IndexComponent,
+        ProfileComponent,
         // PersianDatePickerComponent از اینجا حذف شد چون اکنون Standalone است
     ],
     bootstrap: [AppComponent], 

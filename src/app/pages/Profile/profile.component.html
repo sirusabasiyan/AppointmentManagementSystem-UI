@@ -1,0 +1,227 @@
+<section class="container py-4" dir="rtl" aria-labelledby="profile-heading">
+  <div class="card border-0 shadow-sm rounded-4 p-3 p-md-4">
+
+    <h1 id="profile-heading" class="h4 fw-bold">پروفایل من</h1>
+    <p class="text-secondary">
+      اطلاعات حرفه‌ای و راه‌های تماس خود را برای نمایش در سایت وارد کنید.
+    </p>
+
+    @if (state === 'loading') {
+      <p role="status">در حال دریافت اطلاعات…</p>
+    }
+
+    @if (state === 'failed') {
+      <div class="mt-3">
+        <button type="button" class="btn btn-outline-secondary" (click)="load()">
+          تلاش مجدد
+        </button>
+      </div>
+    }
+
+    @if (state === 'ready') {
+      <!-- تصویر پروفایل -->
+      <div class="d-flex align-items-center gap-3 mb-4 p-3 bg-light rounded-3">
+        <div class="position-relative">
+          @if (imagePreview || model.avatarUrl) {
+            <img
+              [src]="imagePreview || ('http://localhost:5045' + model.avatarUrl)"
+              alt="تصویر پروفایل"
+              class="rounded-circle shadow-sm"
+              style="width: 80px; height: 80px; object-fit: cover;">
+          } @else {
+            <div
+              class="rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center shadow-sm"
+              style="width: 80px; height: 80px; font-size: 1.5rem;">
+              {{ model.title ? model.title.charAt(0) : 'کاربر' }}
+            </div>
+          }
+        </div>
+
+        <div>
+          <label for="avatarInput" class="btn btn-outline-success btn-sm mb-1">
+            <i class="bi bi-camera me-1"></i>
+            انتخاب تصویر پروفایل
+          </label>
+
+          <input
+            type="file"
+            id="avatarInput"
+            class="d-none"
+            accept="image/png, image/jpeg, image/webp"
+            (change)="onFileSelected($event)">
+
+          <div class="small text-muted">فرمت‌های مجاز: JPG, PNG, WebP</div>
+        </div>
+      </div>
+
+      <form
+        #f="ngForm"
+        (ngSubmit)="save(f)"
+        novalidate>
+
+        <fieldset [disabled]="saving">
+
+          <!-- عنوان پروفایل -->
+          <div class="mb-4">
+            <label for="profile-title" class="form-label fw-semibold">
+              عنوان پروفایل <span class="text-danger">*</span>
+            </label>
+
+            <input
+              id="profile-title"
+              name="title"
+              class="form-control"
+              required
+              pattern=".*\S.*"
+              maxlength="200"
+              [(ngModel)]="model.title"
+              #title="ngModel"
+              placeholder="مثلاً دکتر سارا رضایی">
+
+            @if (title.invalid && (title.touched || f.submitted)) {
+              <small class="text-danger">
+                عنوان پروفایل را وارد کنید؛ حداکثر ۲۰۰ کاراکتر.
+              </small>
+            }
+          </div>
+
+          <!-- معرفی پزشک -->
+          <div class="mb-4">
+            <h2 class="h5 fw-bold mb-3">معرفی پزشک</h2>
+
+            <div class="row g-3">
+              <div class="col-12 col-md-6">
+                <label for="jobTitle" class="form-label small fw-semibold">عنوان شغلی</label>
+                <input id="jobTitle" name="jobTitle" type="text" class="form-control" maxlength="150" [(ngModel)]="model.jobTitle">
+              </div>
+
+              <div class="col-12 col-md-6">
+                <label for="avatarUrl" class="form-label small fw-semibold">آدرس تصویر پروفایل</label>
+                <input id="avatarUrl" name="avatarUrl" type="text" dir="ltr" class="form-control" [(ngModel)]="model.avatarUrl">
+              </div>
+
+              <div class="col-12">
+                <label for="bio" class="form-label small fw-semibold">معرفی کوتاه</label>
+                <textarea id="bio" name="bio" class="form-control" rows="3" maxlength="500" [(ngModel)]="model.bio"></textarea>
+              </div>
+
+              <div class="col-12">
+                <label for="aboutMe" class="form-label small fw-semibold">درباره من</label>
+                <textarea id="aboutMe" name="aboutMe" class="form-control" rows="4" [(ngModel)]="model.aboutMe"></textarea>
+              </div>
+            </div>
+          </div>
+
+          <!-- اطلاعات حرفه‌ای -->
+          <div class="mb-4">
+            <h2 class="h5 fw-bold mb-3">اطلاعات حرفه‌ای</h2>
+
+            <div class="row g-3">
+              <div class="col-12 col-md-6">
+                <label for="specialization" class="form-label small fw-semibold">تخصص</label>
+                <input id="specialization" name="specialization" type="text" class="form-control" maxlength="150" [(ngModel)]="model.specialization">
+              </div>
+
+              <div class="col-12 col-md-6">
+                <label for="academicDegree" class="form-label small fw-semibold">مدرک تحصیلی</label>
+                <input id="academicDegree" name="academicDegree" type="text" class="form-control" maxlength="100" [(ngModel)]="model.academicDegree">
+              </div>
+
+              <div class="col-12 col-md-6">
+                <label for="university" class="form-label small fw-semibold">دانشگاه</label>
+                <input id="university" name="university" type="text" class="form-control" maxlength="150" [(ngModel)]="model.university">
+              </div>
+
+              <div class="col-12 col-md-6">
+                <label for="licenseNumber" class="form-label small fw-semibold">شماره نظام / پروانه</label>
+                <input id="licenseNumber" name="licenseNumber" type="text" class="form-control" maxlength="100" [(ngModel)]="model.licenseNumber">
+              </div>
+            </div>
+          </div>
+
+          <!-- اطلاعات تماس -->
+          <div class="mb-4">
+            <h2 class="h5 fw-bold mb-3">اطلاعات تماس</h2>
+
+            <div class="row g-3">
+              <div class="col-12 col-md-6">
+                <label for="phone" class="form-label small fw-semibold">تلفن ثابت</label>
+                <input
+                  id="phone"
+                  name="phone"
+                  type="tel"
+                  inputmode="numeric"
+                  dir="ltr"
+                  class="form-control"
+                  maxlength="11"
+                  pattern="[0-9]{0,11}"
+                  [(ngModel)]="model.phone"
+                  #phoneField="ngModel"
+                  (input)="onPhoneInput($event, 'phone')">
+
+                @if (phoneField.invalid && (phoneField.touched || f.submitted)) {
+                  <small class="text-danger">تلفن باید فقط شامل عدد و حداکثر ۱۱ رقم باشد.</small>
+                }
+              </div>
+
+              <div class="col-12 col-md-6">
+                <label for="cellPhone" class="form-label small fw-semibold">موبایل</label>
+                <input
+                  id="cellPhone"
+                  name="cellPhone"
+                  type="tel"
+                  inputmode="numeric"
+                  dir="ltr"
+                  class="form-control"
+                  maxlength="11"
+                  pattern="[0-9]{0,11}"
+                  [(ngModel)]="model.cellPhone"
+                  #cellPhoneField="ngModel"
+                  (input)="onPhoneInput($event, 'cellPhone')">
+
+                @if (cellPhoneField.invalid && (cellPhoneField.touched || f.submitted)) {
+                  <small class="text-danger">موبایل باید فقط شامل عدد و حداکثر ۱۱ رقم باشد.</small>
+                }
+              </div>
+
+              <div class="col-12">
+                <label for="address" class="form-label small fw-semibold">آدرس مطب</label>
+                <textarea id="address" name="address" class="form-control" rows="3" [(ngModel)]="model.address"></textarea>
+              </div>
+            </div>
+          </div>
+
+          <!-- شبکه‌های اجتماعی -->
+          <div class="mb-4">
+            <h2 class="h5 fw-bold mb-3">شبکه‌های اجتماعی</h2>
+
+            <div class="row g-3">
+              <div class="col-12 col-md-6">
+                <label for="instagramId" class="form-label small fw-semibold">اینستاگرام</label>
+                <input id="instagramId" name="instagramId" type="text" dir="ltr" class="form-control" maxlength="100" [(ngModel)]="model.instagramId">
+              </div>
+
+              <div class="col-12 col-md-6">
+                <label for="telegramId" class="form-label small fw-semibold">تلگرام</label>
+                <input id="telegramId" name="telegramId" type="text" dir="ltr" class="form-control" maxlength="100" [(ngModel)]="model.telegramId">
+              </div>
+
+              <div class="col-12 col-md-6">
+                <label for="whatsAppId" class="form-label small fw-semibold">واتساپ</label>
+                <input id="whatsAppId" name="whatsAppId" type="text" dir="ltr" class="form-control" maxlength="100" [(ngModel)]="model.whatsAppId">
+              </div>
+            </div>
+          </div>
+
+          <button
+            class="btn btn-success px-4 mt-2"
+            type="submit"
+            [disabled]="f.invalid || saving">
+            {{ saving ? 'در حال ذخیره…' : 'ذخیره پروفایل' }}
+          </button>
+
+        </fieldset>
+      </form>
+    }
+  </div>
+</section>

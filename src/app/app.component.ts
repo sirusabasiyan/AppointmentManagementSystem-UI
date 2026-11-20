@@ -12,13 +12,19 @@ import { LoadingService } from './Core/Services/loading.service';
 export class AppComponent implements OnInit, OnDestroy {
   title = 'AppointmentManagementSystem.UI';
   isAdminRoute = false;
+  isHomeRoute = false;
 
   private readonly destroy$ = new Subject<void>();
 
   constructor(
     private router: Router,
     private loadingService: LoadingService
-  ) {}
+  ) 
+  {
+      this.router.events.subscribe(() => {
+        this.isHomeRoute = this.router.url === '/index';
+      });
+  }
 
   ngOnInit(): void {
     this.updateAdminRoute(this.router.url);
